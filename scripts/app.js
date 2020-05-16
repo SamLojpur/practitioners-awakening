@@ -36,7 +36,7 @@ var circle2_group = circle_group.group()
 
 circle_group.animate(9000, 0, 'now').ease('-').loop(0).rotate(-360, 400, 400)
 
-triangle_ring = makeRing(circle_group, 400, 400, 5, 400, makeCircledShape(3, 60, 1.30))
+triangle_ring = makeRing(circle_group, 400, 400, 5, 200, makeCircledShape(3, 60, 1.30))
 // console.log(triangle_ring)
 // triangle_ring.forEach( triangle => triangle.animate(3000, 0, 'now').ease('-').loop(0).rotate(-360, 0, 0) )
 
@@ -63,7 +63,7 @@ function makeRing(ring_group, cx, cy, n, r, corner_decorator_group) {
     // ring_color = SVG.Color.random('vibrant')
     ring = ring_group.circle(r)
 
-    ring.translate(cy - r / 2, cx - r / 2).fill('none').stroke({ color: ring_color, width: 6, linejoin: 'round' })
+    ring.translate(cx - r / 2, cy - r / 2).fill('none').stroke({ color: ring_color, width: 6, linejoin: 'round' })
 
     //polygon ring
     poly_ring = ring_group.polygon().plot(plot)
@@ -84,36 +84,15 @@ function makeRing(ring_group, cx, cy, n, r, corner_decorator_group) {
     })
     mask_ring.back()
     console.log(mask_group.children())
-
-
-    // //shape holder
-    // shape_holder_color = SVG.Color.random('vibrant')
-    // shape_holders = plot.map( ([x,y]) => { return ring_group.circle(110 * 1.10).translate(x + cx - (110 * 1.10)/2,y + cy - (110 * 1.10)/2).fill('none').stroke({ color: ring_color, width: 6, linejoin: 'round' })} );
-
-    // //shape
-    // shape_color = SVG.Color.random('vibrant')
-    // shapes = plot.map( ([x,y]) => { return ring_group.polygon().plot(polygon_plot).translate(x + cx ,y + cy).fill('none').stroke({ color: shape_color, width: 6, linejoin: 'round' })} );
-
-
-    // circled_shapes.forEach(holder => {mask_group.add(holder.clone().fill('#000').stroke('none') )})
-    
     
     mask_group.front()
     core_circle.maskWith(a = mask_group.clone())
     ring.maskWith(b = mask_group.clone())
-    b.animate(3000).translate(-200, -200)
+    b.animate(3000).translate(- cx + r / 2, - cy + r / 2)
     poly_ring.maskWith(c = mask_group.clone())
-    c.animate(3000).translate(-400, -400)
+    c.animate(3000).translate(-cx, -cy)
     mask_group.remove()
-
-    // mask_test.maskWith(mask_group)
-
-
-
-    // mask = group.mask().add(poly_ring).add(ring)
-    // ring_shapes.forEach(ring_shape => { mask.add(ring_shape) })
-    // ring_shape_holder.forEach(shape => shape.maskWith(mask))
-
+    
     return circled_shapes
 }
 
@@ -129,6 +108,16 @@ function regularPolygonPoints(n, r) {
 }
 
 
+// //shape holder
+// shape_holder_color = SVG.Color.random('vibrant')
+// shape_holders = plot.map( ([x,y]) => { return ring_group.circle(110 * 1.10).translate(x + cx - (110 * 1.10)/2,y + cy - (110 * 1.10)/2).fill('none').stroke({ color: ring_color, width: 6, linejoin: 'round' })} );
+
+// //shape
+// shape_color = SVG.Color.random('vibrant')
+// shapes = plot.map( ([x,y]) => { return ring_group.polygon().plot(polygon_plot).translate(x + cx ,y + cy).fill('none').stroke({ color: shape_color, width: 6, linejoin: 'round' })} );
+
+
+// circled_shapes.forEach(holder => {mask_group.add(holder.clone().fill('#000').stroke('none') )})
 
 // var poly = circle2_group.polygon()
 // poly.plot(regularPolygonPoints(5, 60)).translate(105,105).fill('none').stroke({ color: '#000', width: 6, linejoin: 'round' })
