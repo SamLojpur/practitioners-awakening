@@ -20,127 +20,208 @@ SVG.extend(SVG.G, {
 
 })
 
+var randomProperty = function (obj) {
+    var keys = Object.keys(obj);
+    return obj[keys[ keys.length * Math.random() << 0]];
+};
+
+// const primary_dark = "#000051"
+// const primary = "#1a237e"
+// const primary_light = "#534bae"
+// const secondary_dark = "#c6a700"
+// const secondary = "#fdd835"
+// const secondary_light = "#ffff6b"
+const primary_dark = "#00001e"
+const primary = "#0e1554"
+const primary_light = "#362f6e"
+const secondary_dark = "#c6a700"
+const secondary = "#fdd835"
+const secondary_light = "#ffff6b"
 
 // var bg_color = SVG.Color.random('dark')
-var bg_color = '#483D8B'
+// var bg_color = '#483D8B'
+var bg_color = primary_dark
+let ring_color = primary
+// let ring_color = '#ffff6b'
+let shape_color = secondary_light
+let circle_color = secondary_light
+
+// var bg_color = 'grey'
+
+symbol_dict = {
+    fate:"m 1,-2 -0.65695,0.8015 -1.83025,-0.83434 v 3.38615 3.38615 l 1.83025,-0.83434 0.65695,0.8015",
+    war: "m -2,-2 1.5607,-1.56071 v 6.77516 -6.77516 l 1.56071,1.56071",
+    time: "m -2,-3 3.68718,6.27525 h -3.68718 l 3.68718,-6.27525 z",
+    death: "m 0,-4 v 6.77252 m 1.35033,-6.46251 -1.35033,2.43015 -1.35034,-2.44752",
+    nature: "m -1,3 0.80618,-2.99122 c -0.59196,-0.30114 -1.09404,-0.93705 -1.09506,-1.54128 -10e-4,-0.81993 0.9165,-1.74362 1.73642,-1.74224 0.8172,0.001 1.72616,0.92504 1.72479,1.74224 -0.001,0.55532 -0.42383,1.21401 -0.951,1.54128 l 0.83227,2.98985",
+    light: "m 0,-3 v 6.26508 m 0.004,-5.05959 c -0.86557,-0.01 -1.82077,0.99072 -1.81117,1.8563 0.009,0.84659 0.96458,1.78535 1.81117,1.77575 0.82761,-0.009 1.73118,-0.94814 1.74034,-1.77575 0.009,-0.84702 -0.89332,-1.8467 -1.74034,-1.8563 z",
+    myrrh: "m 1,-3 v 4.38769 l -1.79338,1.83691 -1.88044,-1.83691 v -4.38769 l 2.52273,2.19107 -0.64229,0.70794 -0.66887,-0.70794 z",
+    oil: "m 0,3 c 1.81015,0.49036 3.22692,-1.20006 2.2085,-3.37853 -0.90867,1.19399 -2.02588,2.21938 -2.2085,3.37853 z m -0.77849,-0.56445 c 1.3727,-2.76581 3.73768,-3.86315 1.56252,-5.54102 -0.62757,1.79529 -3.60819,3.13845 -1.56252,5.54102 z",
+    iron: "m -5,-4 v 1.27771 h -1.03466 l -1.62842,-1.27771 z m 0.58112,-0.33068 h 5.17579 v 0.84256 c -4.71877,1.75654 -2.14219,2.94803 -0.62257,4.39405 v 0.64813 h -5.57229 v -0.97219 c 1.60529,-1.18306 2.59585,-2.28913 1.01907,-3.10858 z",
+    spice: "m 0,0 0.48292,0.4788 -0.48292,0.48706 -0.49119,-0.48706 z m 7.14675,-0.0661 0.48293,0.4788 -0.48293,0.48705 -0.49118,-0.48705 z m -2.59324,-2.27319 0.48293,0.4788 -0.48293,0.48706 -0.49118,-0.48706 z m -4.03263,6.19962 1.40337,-1.70882 -0.72645,-0.95759 -2.19587,2.66641 z m 0.90806,0 h 6.00974 l -2.87422,-3.97943 z",
+    quartz: "m 2,1 1.10345,-1.47228 -1.18992,-1.59489 -1.03184,1.50634 z m -0.57381,-3.88035 -0.5767,-0.82798 -2.20567,3.23605 2.20567,3.18775 0.59726,-0.87299 -1.53105,-2.35501 z",
+    ash: "m -2,3 -5.63539,-6.14769 7.10663,-0.11823 -3.67811,3.84888",
+    alchohol: "m -2,-3 c 0.40293,1.31325 -2.00785,1.88621 0.0325,2.39648 m -2.99708,-2.32713 3.19108,5.63032 1.95879,-5.64133 h 1.14341 l -3.1022,5.64133",
+    honey: "m 0,-1 v 2.00799 m 1.48828,-1.03943 h -7.34691 l 2.26786,2.26786",
+    milk: "m -8,-3 3.65486,6.3304 3.57463,-6.32315 z",
+    meat: "m -1,-2 c 0,0 0.61087,-0.57309 1.07233,-0.50286 0.46146,0.0702 1.309,0.62767 1.29887,1.92333 -0.0101,1.29567 -2.93683,4.40489 -2.93683,4.40489 h 0.60689 c 0,0 -2.98411,-3.10922 -2.99424,-4.40489 -0.0101,-1.29566 0.83741,-1.85309 1.29887,-1.92332 0.46146,-0.0702 1.07234,0.50285 1.07234,0.50285",
+    coin: "m 2,3 c 0,0 0.45956,-0.53289 0.76224,-0.50207 0.3487,0.0355 0.74354,0.39304 0.74354,0.74355 0,0.94512 -2.00491,1.05979 -2.00491,2.00491 0,0.36303 0.40749,0.75251 0.7701,0.7701 0.22612,0.011 0.4795,-0.20964 0.52446,-0.43152 0.0431,-0.21285 -0.0672,-0.41245 -0.35959,-0.4445 m -6.80774,-1.63813 h 6.75554 l -3.25746,-3.72972 z",
+    darkness: "m -3,0 h -3.75103 l 1.87552,-3.24849 z m 1.87552,-3.24847 -3.75103,6.49698 -3.75104,-6.49698 z",
+    molasses: "m -2,-1 5.12823,1.65373 m 0.26727,-2.93996 c -3.02755,0.61657 -1.12444,4.46346 -3.99234,5.54584 m 2.10475,-6.1472 c -2.67906,0.7699 -0.83355,4.24565 -3.842,5.26187"
+    //holly
+    //bread
+}
 
 
-PIVOT_X = 430
+
+outer = ['fate', 'war', 'time', 'death', 'coin']
+mid = ['milk', 'honey', 'molasses', 'ash', 'alchohol', 'meat']
+inner = ['oil', 'spice', 'quartz', 'iron', 'myrrh']
+
+PIVOT_X = 1000
 PIVOT_Y = 430
+RING_ROTATION_PERIOD = 30000
+SYMBOL_ROTATION_PERIOD = 9000
+RING_ROTATION_DEGREES = 360
+SYMBOL_ROTATION_DEGREES = -360
+// SIZE = 860
+SIZE = 3000
 
-var draw = SVG().addTo('body').size(860, 860).attr({ style: 'background-color:' + bg_color })
-var core_circle = draw.ellipse(100, 100).attr({
+var draw = SVG().addTo('body').size(SIZE, SIZE).attr({ style: 'background-color:' + bg_color })
+var core_circle = draw.circle(100).attr({
     fill: 'none',
-    stroke: SVG.Color.random('vibrant'),
+    stroke: secondary_light,
     'stroke-width': 6
 }).translate(PIVOT_X-50, PIVOT_Y-50);
 
-var circle_group = draw.group()
-triangle_ring = makeRing(circle_group, PIVOT_X, PIVOT_Y, 5, 300, makeCircledShape(3, 50, 1.30, -90))
-circle_group.animate(9000, 0, 'now').ease('-').loop(0).rotate(-360, PIVOT_X, PIVOT_Y)
-triangle_ring.forEach( triangle => triangle.animate(9000, 0, 'now').ease('-').loop(0).rotate(360, 0, 0) )
+
+x = makeCircledSymbol(200, "milk").translate(200,200)
+
+var circle_group1 = draw.group()
+triangle_ring = makeRing(circle_group1, PIVOT_X, PIVOT_Y, 300, inner, 60)
+circle_group1.rotate(-90, PIVOT_X, PIVOT_Y).animate(RING_ROTATION_PERIOD, 0, 'now').ease('-').loop(0).rotate(-RING_ROTATION_DEGREES, PIVOT_X, PIVOT_Y)
+triangle_ring.forEach( triangle => triangle.animate(SYMBOL_ROTATION_PERIOD, 0, 'now').ease('-').loop(0).rotate(SYMBOL_ROTATION_DEGREES, 0, 0) )
 
 var circle_group2 = draw.group()
-triangle_ring = makeRing(circle_group2, PIVOT_X, PIVOT_Y, 7, 500, makeCircledShape(4, 50, 1.30, 45))
-circle_group2.animate(9000, 0, 'now').ease('-').loop(0).rotate(360, PIVOT_X, PIVOT_Y)
-triangle_ring.forEach( triangle => triangle.animate(9000, 0, 'now').ease('-').loop(0).rotate(-360, 0, 0) )
+triangle_ring = makeRing(circle_group2, PIVOT_X, PIVOT_Y, 500, mid, 60)
+circle_group2.rotate(-90, PIVOT_X, PIVOT_Y).animate(RING_ROTATION_PERIOD, 0, 'now').ease('-').loop(0).rotate(RING_ROTATION_DEGREES, PIVOT_X, PIVOT_Y)
+triangle_ring.forEach( triangle => triangle.animate(SYMBOL_ROTATION_PERIOD, 0, 'now').ease('-').loop(0).rotate(-SYMBOL_ROTATION_DEGREES, 0, 0) )
 
 var circle_group3 = draw.group()
-triangle_ring = makeRing(circle_group3, PIVOT_X, PIVOT_Y, 5, 750, makeCircledShape(5, 50, 1.30, -90))
-circle_group3.animate(9000, 0, 'now').ease('-').loop(0).rotate(-360, PIVOT_X, PIVOT_Y)
-triangle_ring.forEach( triangle => triangle.animate(9000, 0, 'now').ease('-').loop(0).rotate(360, 0, 0) )
+triangle_ring = makeRing(circle_group3, PIVOT_X, PIVOT_Y, 750, outer, 60)
+circle_group3.rotate(-90, PIVOT_X, PIVOT_Y).animate(RING_ROTATION_PERIOD, 0, 'now').ease('-').loop(0).rotate(-RING_ROTATION_DEGREES, PIVOT_X, PIVOT_Y)
+triangle_ring.forEach( triangle => triangle.animate(SYMBOL_ROTATION_PERIOD, 0, 'now').ease('-').loop(0).rotate(SYMBOL_ROTATION_DEGREES, 0, 0) )
 
 
-function makeCircledShape(n, r, scale, rotation) {
-    circled_shape_group = draw.group()
-    shape_holder_color = SVG.Color.random('vibrant')
-    ring_color = SVG.Color.random('vibrant')
 
-    polygon_plot = regularPolygonPoints(n, r)
-    shape = circled_shape_group.polygon().plot(polygon_plot).rotate(rotation,0,0).fill('none').stroke({ color: shape_holder_color, width: 6, linejoin: 'round' });
-    shape_holder = circled_shape_group.circle(r * scale).translate(-(r * scale) / 2, -(r * scale) / 2).fill('none').stroke({ color: ring_color, width: 6, linejoin: 'round' });
-    circled_shape_group.translate(200,200)
+
+function makeCircledSymbol(r, symbol_name) {
+    console.log(symbol_name)
+
+    let circled_shape_group = draw.group()
+    
+    // let shape_color = SVG.Color.random('vibrant')
+    // let ring_color = SVG.Color.random('vibrant')
+
+
+    let shape = circled_shape_group.path(symbol_dict[symbol_name]).scale(r/60*5).fill('red').stroke({ color: shape_color, width: 0.5, linejoin: 'round' }).attr({"fill-opacity": 0}).rotate(90)
+
+    let shape_holder = circled_shape_group.circle(r).translate(-(r) / 2, -(r) / 2).fill('red').stroke({ color: ring_color, width: 6, linejoin: 'round' }).attr({"fill-opacity": 0});
+
+    circled_shape_group.on('mouseover', function() {
+        this.animate(300, '<>').stroke(circle_color).scale(1.1)
+        shape_holder.animate(300, '<>').stroke(circle_color)
+
+    })
+    circled_shape_group.on('mouseout', function() {
+        this.animate(300, '<>').stroke(ring_color).scale(1/1.1)
+        shape_holder.animate(300, '<>').stroke(ring_color)
+    })
+    circled_shape_group.on('click',function () {
+        this.animate(500, '<>').rotate(360)
+        x.remove()
+        console.log(symbol_name)
+        x = makeCircledSymbol(200, symbol_name).translate(300,200).rotate(-90)
+    })
     return circled_shape_group
 }
 
 
-function makeRing(ring_group, cx, cy, n, r, corner_decorator_group) {
-    plot = regularPolygonPoints(n, r)
-    angles = regularPolygonAngles(n)
+function makeCircledShape(n, r, scale, rotation) {
+    let circled_shape_group = draw.group()
+    
+    // shape_color = SVG.Color.random('vibrant')
+    // ring_color = SVG.Color.random('vibrant')
+    // shape_color = 'darkred'
+    // ring_color = 'black'
+    let polygon_plot = regularPolygonPoints(n, r / scale)
+    let shape = circled_shape_group.polygon().plot(polygon_plot).rotate(rotation,0,0).fill('red').stroke({ color: shape_color, width: 6, linejoin: 'round' });
+
+    // shape = circled_shape_group.path(randomProperty(symbol_dict)).scale(5).fill('none').stroke({ color: shape_color, width: 0.5, linejoin: 'round' }).rotate(90)
+
+    let shape_holder = circled_shape_group.circle(r).translate(-(r) / 2, -(r) / 2).fill('red').stroke({ color: ring_color, width: 6, linejoin: 'round' });
+
+    circled_shape_group.on('mouseover', function() {
+        this.animate(300, '<>').opacity(1)
+    })
+    circled_shape_group.on('mouseout', function() {
+        this.animate(300, '<>').opacity(0)
+    })
+    return circled_shape_group
+}
+
+
+function makeRing(ring_group, cx, cy, r, symbol_list, symbol_r) {
+    // let ring_color = SVG.Color.random('vibrant')
+    let n = symbol_list.length
+    let plot = regularPolygonPoints(n, r)
+    let angles = regularPolygonAngles(n)
+    console.log(angles)
 
     //outer ring
-    ring = ring_group.circle(r)
-
+    let ring = ring_group.circle(r)
     ring.translate(cx - r / 2, cy - r / 2).fill('none').stroke({ color: ring_color, width: 6, linejoin: 'round' })
 
     //polygon ring
-    poly_ring = ring_group.polygon().plot(plot)
+    let poly_ring = ring_group.polygon().plot(plot)
     poly_ring.translate(cx, cy).fill('none').stroke({ color: ring_color, width: 6, linejoin: 'round' })
 
-    // circled_shapes = plot.map(([x, y]) => { return corner_decorator_group.deepClone().translate(cx + x, cy + y).rotate(angles.shift() ) })
-    circled_shapes = plot.map(([x, y]) => { return corner_decorator_group.deepClone().translate(cx + x, cy + y) })
+    let circled_shapes = plot.map(([x, y]) => { return makeCircledSymbol(symbol_r, symbol_list.pop()).rotate(angles.shift()).translate(cx + x, cy + y) })
+
     circled_shapes.forEach((shape) => {ring_group.add(shape)})
 
 
 
-    mask_group = ring_group.group()
-    mask_ring = ring.clone().fill('#fff').stroke('none').scale(1.5)
+    let mask_group = ring_group.group()
+    let mask_ring = ring.clone().fill('#fff').stroke('none').scale(1.5)
     mask_group.add(mask_ring)
     plot.forEach(([x, y]) => {
-        corner_decorator_group.children().forEach( (child) => {
-            mask_group.add(child.clone().fill('#000').stroke('none').translate(cx + x, cy + y))
-        })
+            mask_group.circle(symbol_r).translate(-(symbol_r) / 2, -(symbol_r) / 2).fill('#000').stroke('none').translate(cx + x, cy + y)
     })
     mask_ring.back()
-    console.log(mask_group.children())
     
     mask_group.front()
     ring.maskWith(mask_group.clone().translate(- cx + r / 2, - cy + r / 2))
     poly_ring.maskWith(mask_group.clone().translate(-cx, -cy))
     mask_group.remove()
-    corner_decorator_group.remove()
     
     return circled_shapes
 }
 
 
 function regularPolygonPoints(n, r) {
-    var plot = []
+    let  plot = []
     for (i = 0; i < n; i++) {
-        var theta = 2 * Math.PI * i / n
+        let  theta = 2 * Math.PI * i / n
         plot.push([Math.cos(theta) * r / 2, Math.sin(theta) * r / 2])
     }
     return plot
 }
 function regularPolygonAngles(n) {
-    var angles = []
+    let  angles = []
     for (i = 0; i < n; i++) {
-        var theta = 360 * i / n
+        let theta = 360 * i / n
         angles.push(theta)
     }
     return angles
 }
-
-// //shape holder
-// shape_holder_color = SVG.Color.random('vibrant')
-// shape_holders = plot.map( ([x,y]) => { return ring_group.circle(110 * 1.10).translate(x + cx - (110 * 1.10)/2,y + cy - (110 * 1.10)/2).fill('none').stroke({ color: ring_color, width: 6, linejoin: 'round' })} );
-
-// //shape
-// shape_color = SVG.Color.random('vibrant')
-// shapes = plot.map( ([x,y]) => { return ring_group.polygon().plot(polygon_plot).translate(x + cx ,y + cy).fill('none').stroke({ color: shape_color, width: 6, linejoin: 'round' })} );
-
-
-// circled_shapes.forEach(holder => {mask_group.add(holder.clone().fill('#000').stroke('none') )})
-
-// var poly = circle2_group.polygon()
-// poly.plot(regularPolygonPoints(5, 60)).translate(105,105).fill('none').stroke({ color: '#000', width: 6, linejoin: 'round' })
-// poly.animate(3000, 0, 'now').ease('-').loop(0).rotate(-360, 0, 0)
-
-/* var rect2 = rect2_svg.rect(50, 50).attr({
-    fill: SVG.Color.random('vibrant')
-}).move(110,110) */
-// var star2 = rect2_svg.polygon('50 15, 100 100, 0 100')
-// star2.fill('none').move(50, 50)
-// star2.stroke({ color: '#f06', width: 4, linecap: 'round', linejoin: 'round' })
-/* rect_svg.animate(6000,0,'now').ease('-').translate(600, 0) */
-// poly.animate(3000).plot(regularPolygonPoints(3,60))
