@@ -25,12 +25,10 @@ var randomProperty = function (obj) {
     return obj[keys[ keys.length * Math.random() << 0]];
 };
 
-// const primary_dark = "#000051"
-// const primary = "#1a237e"
-// const primary_light = "#534bae"
-// const secondary_dark = "#c6a700"
-// const secondary = "#fdd835"
-// const secondary_light = "#ffff6b"
+function getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
 const primary_dark = "#00001e"
 const primary = "#0e1554"
 const primary_light = "#362f6e"
@@ -38,15 +36,10 @@ const secondary_dark = "#c6a700"
 const secondary = "#fdd835"
 const secondary_light = "#ffff6b"
 
-// var bg_color = SVG.Color.random('dark')
-// var bg_color = '#483D8B'
 var bg_color = primary_dark
 let ring_color = primary
-// let ring_color = '#ffff6b'
-let shape_color = secondary_light
+ let shape_color = secondary_light
 let circle_color = secondary_light
-
-// var bg_color = 'grey'
 
 symbol_dict = {
     fate:"m 1,-2 -0.65695,0.8015 -1.83025,-0.83434 v 3.38615 3.38615 l 1.83025,-0.83434 0.65695,0.8015",
@@ -73,10 +66,9 @@ symbol_dict = {
 }
 
 
-
 outer = ['fate', 'war', 'time', 'death', 'coin']
-mid = ['milk', 'honey', 'molasses', 'ash', 'alchohol', 'meat', 'bread']
 inner = ['oil', 'spice', 'quartz', 'holly', 'myrrh']
+mid = ['milk', 'honey', 'molasses', 'ash', 'alchohol', 'meat', 'bread']
 
 PIVOT_X = 1000
 PIVOT_Y = 430
@@ -84,15 +76,22 @@ RING_ROTATION_PERIOD = 30000
 SYMBOL_ROTATION_PERIOD = 9000
 RING_ROTATION_DEGREES = 360
 SYMBOL_ROTATION_DEGREES = -360
-// SIZE = 860
-SIZE = 3000
+SIZE_X = 2000
+SIZE_Y = 1000
 
-var draw = SVG().addTo('body').size(SIZE, SIZE).attr({ style: 'background-color:' + bg_color })
+var draw = SVG().addTo('body').size(SIZE_X, SIZE_Y).attr({ style: 'background-color:' + bg_color, "margin": 0})
 var core_circle = draw.circle(100).attr({
     fill: 'none',
     stroke: secondary_light,
     'stroke-width': 6
 }).translate(PIVOT_X-50, PIVOT_Y-50);
+
+STARFIELD_X_OFFSET = -2000
+
+var star = draw.defs().circle(2).fill(secondary)
+make_starfield(star, 100, 80000)
+make_starfield(star, 200, 160000)
+make_starfield(star, 200, 320000)
 
 
 x = makeCircledSymbol(60, "").translate(300,200).scale(3.5)
@@ -113,20 +112,28 @@ circle_group3.rotate(-90, PIVOT_X, PIVOT_Y).animate(RING_ROTATION_PERIOD, 0, 'no
 triangle_ring.forEach( triangle => triangle.animate(SYMBOL_ROTATION_PERIOD, 0, 'now').ease('-').loop(0).rotate(SYMBOL_ROTATION_DEGREES, 0, 0) )
 
 
+function make_starfield(star_svg, count, duration) {
+    let starfield_group = draw.group()
 
+    let timeline = new SVG.Timeline()
+    for (i = 0; i < count; i++) {
+        draw.use(star_svg).scale(getRandomArbitrary(0.5,1.5))
+        .translate(getRandomArbitrary(Math.min(0,STARFIELD_X_OFFSET), SIZE_X + Math.max(0,STARFIELD_X_OFFSET)),SIZE_Y)//prolly needs +n% for diagonal screen being longer than non-diagonal
+        .timeline(timeline)
+        .animate(duration, getRandomArbitrary(0, duration), 'start')
+        .ease('-').translate(-STARFIELD_X_OFFSET,-SIZE_Y-2).loop(0,false, 0)
+    }
+    timeline.seek(duration)
+    return starfield_group
+}
 
 function makeCircledSymbol(r, symbol_name) {
-    console.log(symbol_name)
 
     let circled_shape_group = draw.group()
-    
-    // let shape_color = SVG.Color.random('vibrant')
-    // let ring_color = SVG.Color.random('vibrant')
 
+    let shape = circled_shape_group.path(symbol_dict[symbol_name]).scale(r/60*5).stroke({ color: shape_color, width: 0.5, linejoin: 'round' }).attr({"fill-opacity": 0}).rotate(90)
 
-    let shape = circled_shape_group.path(symbol_dict[symbol_name]).scale(r/60*5).fill('red').stroke({ color: shape_color, width: 0.5, linejoin: 'round' }).attr({"fill-opacity": 0}).rotate(90)
-
-    let shape_holder = circled_shape_group.circle(r).translate(-(r) / 2, -(r) / 2).fill('red').stroke({ color: ring_color, width: 6, linejoin: 'round' }).attr({"fill-opacity": 0});
+    let shape_holder = circled_shape_group.circle(r).translate(-r / 2, -r / 2).stroke({ color: ring_color, width: 6, linejoin: 'round' }).attr({"fill-opacity": 0});
 
     circled_shape_group.on('mouseover', function() {
         this.animate(300, '<>').stroke(circle_color).scale(1.1)
@@ -140,32 +147,7 @@ function makeCircledSymbol(r, symbol_name) {
     circled_shape_group.on('click',function () {
         this.animate(500, '<>').rotate(360)
         x.remove()
-        console.log(symbol_name)
         x = makeCircledSymbol(60, symbol_name).translate(300,200).scale(3.5).rotate(-90)
-    })
-    return circled_shape_group
-}
-
-
-function makeCircledShape(n, r, scale, rotation) {
-    let circled_shape_group = draw.group()
-    
-    // shape_color = SVG.Color.random('vibrant')
-    // ring_color = SVG.Color.random('vibrant')
-    // shape_color = 'darkred'
-    // ring_color = 'black'
-    let polygon_plot = regularPolygonPoints(n, r / scale)
-    let shape = circled_shape_group.polygon().plot(polygon_plot).rotate(rotation,0,0).fill('red').stroke({ color: shape_color, width: 6, linejoin: 'round' });
-
-    // shape = circled_shape_group.path(randomProperty(symbol_dict)).scale(5).fill('none').stroke({ color: shape_color, width: 0.5, linejoin: 'round' }).rotate(90)
-
-    let shape_holder = circled_shape_group.circle(r).translate(-(r) / 2, -(r) / 2).fill('red').stroke({ color: ring_color, width: 6, linejoin: 'round' });
-
-    circled_shape_group.on('mouseover', function() {
-        this.animate(300, '<>').opacity(1)
-    })
-    circled_shape_group.on('mouseout', function() {
-        this.animate(300, '<>').opacity(0)
     })
     return circled_shape_group
 }
@@ -176,7 +158,6 @@ function makeRing(ring_group, cx, cy, r, symbol_list, symbol_r) {
     let n = symbol_list.length
     let plot = regularPolygonPoints(n, r)
     let angles = regularPolygonAngles(n)
-    console.log(angles)
 
     //outer ring
     let ring = ring_group.circle(r)
