@@ -38,7 +38,7 @@ const secondary_light = "#ffff6b"
 
 var bg_color = primary_dark
 let ring_color = primary
- let shape_color = secondary_light
+let shape_color = secondary_light
 let circle_color = secondary_light
 
 symbol_dict = {
@@ -70,16 +70,23 @@ outer = ['fate', 'war', 'time', 'death', 'coin']
 inner = ['oil', 'spice', 'quartz', 'holly', 'myrrh']
 mid = ['milk', 'honey', 'molasses', 'ash', 'alchohol', 'meat', 'bread']
 
-PIVOT_X = 1000
-PIVOT_Y = 430
+const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+
 RING_ROTATION_PERIOD = 30000
 SYMBOL_ROTATION_PERIOD = 9000
 RING_ROTATION_DEGREES = 360
 SYMBOL_ROTATION_DEGREES = -360
-SIZE_X = 2000
-SIZE_Y = 1000
+SIZE_X = vw
+SIZE_Y = vh
+PIVOT_X = SIZE_X/2
+PIVOT_Y = SIZE_Y/2
 
-var draw = SVG().addTo('body').size(SIZE_X, SIZE_Y).attr({ style: 'background-color:' + bg_color, "margin": 0})
+console.log(SIZE_X, vh)
+// var draw = SVG().addTo('body').size(SIZE_X, SIZE_Y).attr({ style: 'background-color:' + bg_color, "margin": 0})
+var draw = SVG('svg.magic-circle').attr({"margin": 0}).size(SIZE_X, SIZE_Y)
+var starfield_draw = SVG('svg.stars').attr({ style: 'background-color:' + bg_color, "margin": 0})
+
 var core_circle = draw.circle(100).attr({
     fill: 'none',
     stroke: secondary_light,
@@ -88,13 +95,13 @@ var core_circle = draw.circle(100).attr({
 
 STARFIELD_X_OFFSET = -2000
 
-var star = draw.defs().circle(2).fill(secondary)
+var star = starfield_draw.defs().circle(2).fill(secondary)
 make_starfield(star, 100, 80000)
 make_starfield(star, 200, 160000)
 make_starfield(star, 200, 320000)
 
 
-x = makeCircledSymbol(60, "").translate(300,200).scale(3.5)
+// x = makeCircledSymbol(60, "").translate(300,200).scale(3.5)
 
 var circle_group1 = draw.group()
 triangle_ring = makeRing(circle_group1, PIVOT_X, PIVOT_Y, 300, inner, 60)
@@ -113,11 +120,11 @@ triangle_ring.forEach( triangle => triangle.animate(SYMBOL_ROTATION_PERIOD, 0, '
 
 
 function make_starfield(star_svg, count, duration) {
-    let starfield_group = draw.group()
+    let starfield_group = starfield_draw.group()
 
     let timeline = new SVG.Timeline()
     for (i = 0; i < count; i++) {
-        draw.use(star_svg).scale(getRandomArbitrary(0.5,1.5))
+        starfield_draw.use(star_svg).scale(getRandomArbitrary(0.5,1.5))
         .translate(getRandomArbitrary(Math.min(0,STARFIELD_X_OFFSET), SIZE_X + Math.max(0,STARFIELD_X_OFFSET)),SIZE_Y)//prolly needs +n% for diagonal screen being longer than non-diagonal
         .timeline(timeline)
         .animate(duration, getRandomArbitrary(0, duration), 'start')
