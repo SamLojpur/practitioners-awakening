@@ -1,20 +1,15 @@
-html body header .wrap {
+html, body, header {
   height: 100%;
-}
-
-.stars {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: -100;
-  height: 100vh;
-  width: 100%;
+  margin: 0;
+  background-color: #00001e;
+  /* font-size: 24px; */
 }
 
 header {
   position: relative;
   z-index: 0;
 }
+
 header {
   text-align: center;
   font: 3em/1.4 helvetica neue, helvetica, arial, sans-serif;
@@ -37,4 +32,18 @@ header {
   right: -9999px;
   margin: auto;
   margin-top: 0;
+}
+
+.stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -100;
+  object-fit: cover;
+  height: 100vh;
+  width: 100%;
+}
+
+.bottom-div {
+  background-color: #0e1554;
 }

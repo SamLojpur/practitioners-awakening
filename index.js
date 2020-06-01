@@ -103,18 +103,21 @@ const RING_ROTATION_PERIOD = 30000
 const SYMBOL_ROTATION_PERIOD = 9000
 const RING_ROTATION_DEGREES = 360
 const SYMBOL_ROTATION_DEGREES = -360
-const SIZE_X = vw
-const SIZE_Y = vh
+const SIZE_X = 830
+const SIZE_Y = 830
 const PIVOT_X = SIZE_X / 2
 const PIVOT_Y = SIZE_Y / 2
 const STARFIELD_X_OFFSET = -2000
+
+const STARFIELD_X = 1920
+const STARFIELD_Y = 1080
 
 var draw = SVG('svg.magic-circle').attr({ margin: 0 }).size(SIZE_X, SIZE_Y)
 var starfieldDraw = SVG('svg.stars').attr({
   style: 'background-color:' + BG_COLOR,
   margin: 0
 })
-var star = starfieldDraw.symbol().circle(2).fill(SECONDARY)
+var star = starfieldDraw.symbol().circle(2).fill('white')
 makeStarfield(star, 100, 80000)
 makeStarfield(star, 200, 160000)
 makeStarfield(star, 200, 320000)
@@ -128,15 +131,13 @@ const coreCircle = draw
   })
   .translate(PIVOT_X - 50, PIVOT_Y - 50)
 
-let popup = makeCircledSymbol2(60, '').translate(300, 200).scale(3.5)
+let popup = makeCircledSymbol(60, '').translate(300, 200).scale(3.5)
 
 const innerSymbolGroups = INNER.map((symbolString) => {
-  return makeCircledSymbol2(60, SYMBOL_NAME_TO_STRING_MAP[symbolString])
+  return makeCircledSymbol(60, SYMBOL_NAME_TO_STRING_MAP[symbolString])
 })
-
-var circleGroup1 = draw.group()
-const ringGroup = makeRing(circleGroup1, PIVOT_X, PIVOT_Y, 300, innerSymbolGroups, 60)
-circleGroup1
+const ringGroup = makeRing(PIVOT_X, PIVOT_Y, 300, innerSymbolGroups, 60)
+ringGroup
   .rotate(-90, PIVOT_X, PIVOT_Y)
   .animate(RING_ROTATION_PERIOD, 0, 'now')
   .ease('-')
@@ -151,15 +152,43 @@ ringGroup.remember('circledShapes').forEach((triangle) =>
     .rotate(SYMBOL_ROTATION_DEGREES, 0, 0)
 )
 
-// var circle_group2 = draw.group()
-// triangle_ring = makeRing(circle_group2, PIVOT_X, PIVOT_Y, 500, MID, 60)
-// circle_group2.rotate(-90, PIVOT_X, PIVOT_Y).animate(RING_ROTATION_PERIOD, 0, 'now').ease('-').loop(0).rotate(RING_ROTATION_DEGREES, PIVOT_X, PIVOT_Y)
-// triangle_ring.forEach( triangle => triangle.animate(SYMBOL_ROTATION_PERIOD, 0, 'now').ease('-').loop(0).rotate(-SYMBOL_ROTATION_DEGREES, 0, 0) )
+const midSymbolGroups = MID.map((symbolString) => {
+  return makeCircledSymbol(60, SYMBOL_NAME_TO_STRING_MAP[symbolString])
+})
+const ringGroup2 = makeRing(PIVOT_X, PIVOT_Y, 500, midSymbolGroups, 60)
+ringGroup2
+  .rotate(-90, PIVOT_X, PIVOT_Y)
+  .animate(RING_ROTATION_PERIOD, 0, 'now')
+  .ease('-')
+  .loop(0)
+  .rotate(RING_ROTATION_DEGREES, PIVOT_X, PIVOT_Y)
 
-// var circle_group3 = draw.group()
-// triangle_ring = makeRing(circle_group3, PIVOT_X, PIVOT_Y, 750, OUTER, 60)
-// circle_group3.rotate(-90, PIVOT_X, PIVOT_Y).animate(RING_ROTATION_PERIOD, 0, 'now').ease('-').loop(0).rotate(-RING_ROTATION_DEGREES, PIVOT_X, PIVOT_Y)
-// triangle_ring.forEach( triangle => triangle.animate(SYMBOL_ROTATION_PERIOD, 0, 'now').ease('-').loop(0).rotate(SYMBOL_ROTATION_DEGREES, 0, 0) )
+ringGroup2.remember('circledShapes').forEach((triangle) =>
+  triangle
+    .animate(SYMBOL_ROTATION_PERIOD, 0, 'now')
+    .ease('-')
+    .loop(0)
+    .rotate(-SYMBOL_ROTATION_DEGREES, 0, 0)
+)
+
+const outerSymbolGroups = OUTER.map((symbolString) => {
+  return makeCircledSymbol(60, SYMBOL_NAME_TO_STRING_MAP[symbolString])
+})
+const ringGroup3 = makeRing(PIVOT_X, PIVOT_Y, 750, outerSymbolGroups, 60)
+ringGroup3
+  .rotate(-90, PIVOT_X, PIVOT_Y)
+  .animate(RING_ROTATION_PERIOD, 0, 'now')
+  .ease('-')
+  .loop(0)
+  .rotate(-RING_ROTATION_DEGREES, PIVOT_X, PIVOT_Y)
+
+ringGroup3.remember('circledShapes').forEach((triangle) =>
+  triangle
+    .animate(SYMBOL_ROTATION_PERIOD, 0, 'now')
+    .ease('-')
+    .loop(0)
+    .rotate(SYMBOL_ROTATION_DEGREES, 0, 0)
+)
 
 function makeStarfield (starSvg, count, duration) {
   const starfieldGroup = starfieldDraw.group()
@@ -172,22 +201,22 @@ function makeStarfield (starSvg, count, duration) {
       .translate(
         getRandomArbitrary(
           Math.min(0, STARFIELD_X_OFFSET),
-          SIZE_X + Math.max(0, STARFIELD_X_OFFSET)
+          STARFIELD_X + Math.max(0, STARFIELD_X_OFFSET)
         ),
-        SIZE_Y
+        STARFIELD_Y
       ) // prolly needs +n% for diagonal screen being longer than non-diagonal
       .timeline(timeline)
       .animate(duration, getRandomArbitrary(0, duration), 'start')
       .ease('-')
-      .translate(-STARFIELD_X_OFFSET, -SIZE_Y - 2)
+      .translate(-STARFIELD_X_OFFSET, -STARFIELD_Y - 2)
       .loop(0, false, 0)
   }
   timeline.seek(duration)
   return starfieldGroup
 }
 
-function makeCircledSymbol2 (r, symbolString) {
-  console.log('creating')
+function makeCircledSymbol (r, symbolString) {
+  const SCALE_FACTOR = 1.2
   const circledShapeGroup = draw.group()
 
   // eslint-disable-next-line no-unused-vars
@@ -207,23 +236,23 @@ function makeCircledSymbol2 (r, symbolString) {
   circledShapeGroup.on('mouseover', function () {
     this.animate(300, '<>')
       .stroke(CIRCLE_COLOR)
-      .scale(1.5)
+      .scale(SCALE_FACTOR)
     this.remember('mask').animate(300, '<>')
-      .scale(1.5)
+      .scale(SCALE_FACTOR)
     shapeHolder.animate(300, '<>').stroke(CIRCLE_COLOR)
   })
   circledShapeGroup.on('mouseout', function () {
     this.animate(300, '<>')
       .stroke(RING_COLOR)
-      .scale(1 / 1.5)
+      .scale(1 / SCALE_FACTOR)
     this.remember('mask').animate(300, '<>')
-      .scale(1 / 1.5)
+      .scale(1 / SCALE_FACTOR)
     shapeHolder.animate(300, '<>').stroke(RING_COLOR)
   })
   circledShapeGroup.on('click', function () {
     this.animate(500, '<>').rotate(360)
     popup.remove()
-    popup = makeCircledSymbol2(60, symbolString)
+    popup = makeCircledSymbol(60, symbolString)
       .translate(300, 200)
       .scale(3.5)
       .rotate(-90)
@@ -231,15 +260,12 @@ function makeCircledSymbol2 (r, symbolString) {
   return circledShapeGroup
 }
 
-function makeRing (ringGroup, cx, cy, r, symbolList, symbolR) {
+function makeRing (cx, cy, r, symbolList, symbolR) {
+  var ringGroup = draw.group()
   // let ring_color = SVG.Color.random('vibrant')
   const n = symbolList.length
   const plot = regularPolygonPoints(n, r)
   const angles = regularPolygonAngles(n)
-
-  ringGroup.data('cx', cx)
-  ringGroup.data('cy', cy)
-  ringGroup.data('r', r)
 
   // outer ring
   const ring = ringGroup.circle(r)
@@ -260,7 +286,6 @@ function makeRing (ringGroup, cx, cy, r, symbolList, symbolR) {
   // })
 
   const maskGroup = draw.symbol().group()
-  // const maskGroup = draw.group()
   const maskRing = ring.clone().fill('#fff').stroke('none').scale(1.1)
   maskGroup.add(maskRing)
 
