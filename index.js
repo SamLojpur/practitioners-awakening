@@ -103,7 +103,7 @@ const RING_ROTATION_PERIOD = 30000
 const SYMBOL_ROTATION_PERIOD = 9000
 const RING_ROTATION_DEGREES = 360
 const SYMBOL_ROTATION_DEGREES = -360
-const SIZE_X = 830
+const SIZE_X = 1200
 const SIZE_Y = 830
 const PIVOT_X = SIZE_X / 2
 const PIVOT_Y = SIZE_Y / 2
@@ -131,7 +131,7 @@ const coreCircle = draw
   })
   .translate(PIVOT_X - 50, PIVOT_Y - 50)
 
-let popup = makeCircledSymbol(60, '').translate(300, 200).scale(3.5)
+let popup = makeCircledSymbol(60, '').translate(120, 150).scale(3.5)
 
 const innerSymbolGroups = INNER.map((symbolString) => {
   return makeCircledSymbol(60, SYMBOL_NAME_TO_STRING_MAP[symbolString])
@@ -253,7 +253,7 @@ function makeCircledSymbol (r, symbolString) {
     this.animate(500, '<>').rotate(360)
     popup.remove()
     popup = makeCircledSymbol(60, symbolString)
-      .translate(300, 200)
+      .translate(120, 150)
       .scale(3.5)
       .rotate(-90)
   })
