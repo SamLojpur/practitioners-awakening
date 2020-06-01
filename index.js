@@ -25,7 +25,8 @@
 //     return obj[keys[keys.length * Math.random() << 0]]
 // };
 
-// import { SVG } from '../node_modules/@svgdotjs/svg.js'
+import SVG from './node_modules/@svgdotjs/svg.js/src/svg.js'
+console.log(SVG)
 
 function getRandomArbitrary (min, max) {
   return Math.random() * (max - min) + min
@@ -134,14 +135,15 @@ const innerSymbolGroups = INNER.map((symbolString) => {
 })
 
 var circleGroup1 = draw.group()
-const triangleRing = makeRing(circleGroup1, PIVOT_X, PIVOT_Y, 300, innerSymbolGroups, 60)
+const ringGroup = makeRing(circleGroup1, PIVOT_X, PIVOT_Y, 300, innerSymbolGroups, 60)
 circleGroup1
   .rotate(-90, PIVOT_X, PIVOT_Y)
   .animate(RING_ROTATION_PERIOD, 0, 'now')
   .ease('-')
   .loop(0)
   .rotate(-RING_ROTATION_DEGREES, PIVOT_X, PIVOT_Y)
-triangleRing.forEach((triangle) =>
+
+ringGroup.remember('circledShapes').forEach((triangle) =>
   triangle
     .animate(SYMBOL_ROTATION_PERIOD, 0, 'now')
     .ease('-')
@@ -206,11 +208,15 @@ function makeCircledSymbol2 (r, symbolString) {
     this.animate(300, '<>')
       .stroke(CIRCLE_COLOR)
       .scale(1.5)
+    this.remember('mask').animate(300, '<>')
+      .scale(1.5)
     shapeHolder.animate(300, '<>').stroke(CIRCLE_COLOR)
   })
   circledShapeGroup.on('mouseout', function () {
     this.animate(300, '<>')
       .stroke(RING_COLOR)
+      .scale(1 / 1.5)
+    this.remember('mask').animate(300, '<>')
       .scale(1 / 1.5)
     shapeHolder.animate(300, '<>').stroke(RING_COLOR)
   })
@@ -231,6 +237,10 @@ function makeRing (ringGroup, cx, cy, r, symbolList, symbolR) {
   const plot = regularPolygonPoints(n, r)
   const angles = regularPolygonAngles(n)
 
+  ringGroup.data('cx', cx)
+  ringGroup.data('cy', cy)
+  ringGroup.data('r', r)
+
   // outer ring
   const ring = ringGroup.circle(r)
   ring
@@ -245,36 +255,46 @@ function makeRing (ringGroup, cx, cy, r, symbolList, symbolR) {
     .fill('none')
     .stroke({ color: RING_COLOR, width: 6, linejoin: 'round' })
 
-  const circledShapes = plot.map(([x, y]) => {
-    return symbolList.pop()
-      .addTo(ringGroup)
-      .rotate(angles.shift())
-      .translate(cx + x, cy + y)
-  })
+  // const circledShapes = plot.map(([x, y]) => {
 
-  // circledShapes.forEach((shape) => {
-  //   ringGroup.add(shape)
   // })
 
-  const maskGroup = ringGroup.group()
-  const maskRing = ring.clone().fill('#fff').stroke('none').scale(1.5)
+  const maskGroup = draw.symbol().group()
+  // const maskGroup = draw.group()
+  const maskRing = ring.clone().fill('#fff').stroke('none').scale(1.1)
   maskGroup.add(maskRing)
 
   maskGroup.back()
 
-  plot.forEach(([x, y]) => {
-    maskGroup
+  const circledShapes = plot.map(([x, y]) => {
+    const maskCircle = maskGroup
       .circle(symbolR)
       .translate(-symbolR / 2, -symbolR / 2)
       .fill('#000')
       .stroke('none')
       .translate(cx + x, cy + y)
-  })
-  ring.maskWith(maskGroup.clone().translate(-cx + r / 2, -cy + r / 2))
-  polyRing.maskWith(maskGroup.clone().translate(-cx, -cy))
-  maskGroup.remove()
 
-  return circledShapes
+    return symbolList.pop()
+      .addTo(ringGroup)
+      .rotate(angles.shift())
+      .translate(cx + x, cy + y)
+      .remember('mask', maskCircle, true)
+  })
+  ringGroup.remember('circledShapes', circledShapes)
+  ringGroup.remember('maskGroup', maskGroup)
+
+  // ringGroup.use(maskGroup)
+
+  ring.maskWith(ringGroup.use(maskGroup).translate(-cx + r / 2, -cy + r / 2))
+  polyRing.maskWith(ringGroup.use(maskGroup).translate(-cx, -cy))
+
+  // ring.maskWith(maskGroup.clone().translate(-cx + r / 2, -cy + r / 2))
+  // console.log(ring.masker().first())
+  // polyRing.maskWith(maskGroup.clone().translate(-cx, -cy))
+  // ring.masker().first().children().translate(30, 0)
+  // maskGroup.remove()
+
+  return ringGroup
 }
 
 function regularPolygonPoints (n, r) {
