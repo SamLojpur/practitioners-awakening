@@ -26,6 +26,7 @@
 // };
 
 import SVG from './node_modules/@svgdotjs/svg.js/src/svg.js'
+// import { $, jQuery } from './node_modules/jquery/dist/jquery.js'
 console.log(SVG)
 
 function getRandomArbitrary (min, max) {
@@ -68,7 +69,7 @@ const SYMBOL_NAME_TO_STRING_MAP = {
   quartz:
     'm 2,1 1.10345,-1.47228 -1.18992,-1.59489 -1.03184,1.50634 z m -0.57381,-3.88035 -0.5767,-0.82798 -2.20567,3.23605 2.20567,3.18775 0.59726,-0.87299 -1.53105,-2.35501 z',
   ash: 'm -2,3 -5.63539,-6.14769 7.10663,-0.11823 -3.67811,3.84888',
-  alchohol:
+  alcohol:
     'm -2,-3 c 0.40293,1.31325 -2.00785,1.88621 0.0325,2.39648 m -2.99708,-2.32713 3.19108,5.63032 1.95879,-5.64133 h 1.14341 l -3.1022,5.64133',
   honey: 'm 0,-1 v 2.00799 m 1.48828,-1.03943 h -7.34691 l 2.26786,2.26786',
   milk: 'm -8,-3 3.65486,6.3304 3.57463,-6.32315 z',
@@ -88,7 +89,7 @@ const SYMBOL_NAME_TO_STRING_MAP = {
 
 const OUTER = ['fate', 'war', 'time', 'death', 'coin']
 const MID = ['oil', 'spice', 'quartz', 'holly', 'myrrh']
-const INNER = ['milk', 'honey', 'molasses', 'ash', 'alchohol', 'meat', 'bread']
+const INNER = ['milk', 'honey', 'molasses', 'ash', 'alcohol', 'meat', 'bread']
 
 const vw = Math.max(
   document.documentElement.clientWidth || 0,
@@ -112,11 +113,16 @@ const STARFIELD_X_OFFSET = -2000
 const STARFIELD_X = 1920
 const STARFIELD_Y = 1080
 
+const SIZE_X_HIGHLIGHT = 250
+const SIZE_Y_HIGHLIGHT = 250
+
+var highlightDraw = SVG('svg.info').attr({ margin: 0 }).size(SIZE_X_HIGHLIGHT, SIZE_Y_HIGHLIGHT)
 var draw = SVG('svg.magic-circle').attr({ margin: 0 }).size(SIZE_X, SIZE_Y)
 var starfieldDraw = SVG('svg.stars').attr({
   style: 'background-color:' + BG_COLOR,
   margin: 0
 })
+
 var star = starfieldDraw.symbol().circle(2).fill('white')
 makeStarfield(star, 100, 80000)
 makeStarfield(star, 200, 160000)
@@ -131,10 +137,11 @@ const coreCircle = draw
   })
   .translate(PIVOT_X - 50, PIVOT_Y - 50)
 
-let popup = makeCircledSymbol(60, '').translate(120, 150).scale(3.5)
+let popup = makeCircledSymbol(60, '')
+popup.addTo(highlightDraw).translate(SIZE_X_HIGHLIGHT / 2, SIZE_Y_HIGHLIGHT / 2).scale(3.0)
 
 const innerSymbolGroups = INNER.map((symbolString) => {
-  return makeCircledSymbol(60, SYMBOL_NAME_TO_STRING_MAP[symbolString])
+  return makeCircledSymbol(60, symbolString)
 })
 const ringGroup = makeRing(PIVOT_X, PIVOT_Y, 300, innerSymbolGroups, 60)
 ringGroup
@@ -153,7 +160,7 @@ ringGroup.remember('circledShapes').forEach((triangle) =>
 )
 
 const midSymbolGroups = MID.map((symbolString) => {
-  return makeCircledSymbol(60, SYMBOL_NAME_TO_STRING_MAP[symbolString])
+  return makeCircledSymbol(60, symbolString)
 })
 const ringGroup2 = makeRing(PIVOT_X, PIVOT_Y, 500, midSymbolGroups, 60)
 ringGroup2
@@ -172,7 +179,7 @@ ringGroup2.remember('circledShapes').forEach((triangle) =>
 )
 
 const outerSymbolGroups = OUTER.map((symbolString) => {
-  return makeCircledSymbol(60, SYMBOL_NAME_TO_STRING_MAP[symbolString])
+  return makeCircledSymbol(60, symbolString)
 })
 const ringGroup3 = makeRing(PIVOT_X, PIVOT_Y, 750, outerSymbolGroups, 60)
 ringGroup3
@@ -215,7 +222,9 @@ function makeStarfield (starSvg, count, duration) {
   return starfieldGroup
 }
 
-function makeCircledSymbol (r, symbolString) {
+function makeCircledSymbol (r, symbolName) {
+  const symbolString = SYMBOL_NAME_TO_STRING_MAP[symbolName]
+
   const SCALE_FACTOR = 1.2
   const circledShapeGroup = draw.group()
 
@@ -234,28 +243,37 @@ function makeCircledSymbol (r, symbolString) {
     .attr({ 'fill-opacity': 0 })
 
   circledShapeGroup.on('mouseover', function () {
-    this.animate(300, '<>')
-      .stroke(CIRCLE_COLOR)
-      .scale(SCALE_FACTOR)
-    this.remember('mask').animate(300, '<>')
-      .scale(SCALE_FACTOR)
-    shapeHolder.animate(300, '<>').stroke(CIRCLE_COLOR)
+    if (this.remember('mask') !== undefined) {
+      this.animate(300, '<>')
+        .scale(SCALE_FACTOR)
+      this.remember('mask').animate(300, '<>')
+        .scale(SCALE_FACTOR)
+      shapeHolder.animate(300, '<>').stroke(CIRCLE_COLOR)
+    }
   })
   circledShapeGroup.on('mouseout', function () {
-    this.animate(300, '<>')
-      .stroke(RING_COLOR)
-      .scale(1 / SCALE_FACTOR)
-    this.remember('mask').animate(300, '<>')
-      .scale(1 / SCALE_FACTOR)
-    shapeHolder.animate(300, '<>').stroke(RING_COLOR)
+    if (this.remember('mask') !== undefined) {
+      this.animate(300, '<>')
+        .scale(1 / SCALE_FACTOR)
+      this.remember('mask').animate(300, '<>')
+        .scale(1 / SCALE_FACTOR)
+      shapeHolder.animate(300, '<>').stroke(RING_COLOR)
+    }
   })
   circledShapeGroup.on('click', function () {
-    this.animate(500, '<>').rotate(360)
-    popup.remove()
-    popup = makeCircledSymbol(60, symbolString)
-      .translate(120, 150)
-      .scale(3.5)
-      .rotate(-90)
+    if (this.remember('mask') !== undefined) {
+      this.animate(500, '<>').rotate(360)
+      popup.remove()
+      popup = makeCircledSymbol(60, symbolName)
+        .translate(SIZE_X_HIGHLIGHT / 2, SIZE_Y_HIGHLIGHT / 2)
+        .scale(3.0)
+        .rotate(-90)
+        .addTo(highlightDraw)
+      popup.animate(50).scale(1.2).animate().scale(1 / 1.2)
+      popup.last().animate(50).stroke(CIRCLE_COLOR).animate().stroke(RING_COLOR)
+      const capsSymbolName = symbolName.charAt(0).toUpperCase() + symbolName.slice(1)
+      $('#cardSymbolName').html(capsSymbolName)
+    }
   })
   return circledShapeGroup
 }
