@@ -33,11 +33,15 @@ function getRandomArbitrary (min, max) {
   return Math.random() * (max - min) + min
 }
 
-const PRIMARY_DARK = '#00001e'
-const PRIMARY = '#0e1554'
-// eslint-disable-next-line no-unused-vars
+// const PRIMARY_DARK = '#00001e'
+// const PRIMARY = '#0e1554'
+// const PRIMARY_LIGHT = '#362f6e'
+// const SECONDARY_DARK = '#c6a700'
+// const SECONDARY = '#fdd835'
+// const SECONDARY_LIGHT = '#ffff6b'
+const PRIMARY_DARK = '#0C0C35'
+const PRIMARY = '#1D1D7F'
 const PRIMARY_LIGHT = '#362f6e'
-// eslint-disable-next-line no-unused-vars
 const SECONDARY_DARK = '#c6a700'
 const SECONDARY = '#fdd835'
 const SECONDARY_LIGHT = '#ffff6b'
@@ -207,8 +211,8 @@ starfieldDraw.rotate(0, 0, 0).scale(1)
 $('#stars').attr("viewBox", `0 0 ${STARFIELD_X} ${STARFIELD_Y}`);
 var star = starfieldDraw.symbol().circle(2).fill('white')
 makeStarfield(star, 50, 60000)
-makeStarfield(star, 50, 32000)
-makeStarfield(star, 100, 64000)
+// makeStarfield(star, 50, 32000)
+// makeStarfield(star, 100, 64000)
 
 const coreCircle = draw
   .circle(100)
@@ -352,7 +356,7 @@ function makeCircledSymbol (r, symbolName) {
       shapeHolder.animate(300, '<>').stroke(RING_COLOR)
     }
   })
-  circledShapeGroup.on('click', function () {
+  circledShapeGroup.on('click touchend', function () {
     if (this.remember('mask') !== undefined) {
       this.animate(500, '<>').rotate(360)
       popup.remove()
