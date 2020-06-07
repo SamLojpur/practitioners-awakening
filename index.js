@@ -25,7 +25,7 @@
 //     return obj[keys[keys.length * Math.random() << 0]]
 // };
 
-import SVG from './node_modules/@svgdotjs/svg.js/src/svg.js'
+// import SVG from './node_modules/@svgdotjs/svg.js/src/svg.js'
 // import { $, jQuery } from './node_modules/jquery/dist/jquery.js'
 console.log(SVG)
 
