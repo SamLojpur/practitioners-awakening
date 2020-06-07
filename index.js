@@ -183,15 +183,15 @@ const SIZE_Y_HIGHLIGHT = 250
 
 var highlightDraw = SVG('svg.info').attr({ margin: 0 }).size(SIZE_X_HIGHLIGHT, SIZE_Y_HIGHLIGHT)
 var draw = SVG('svg.magic-circle').attr({ margin: 0 }).size(SIZE_X, SIZE_Y)
-var starfieldDraw = SVG('svg.stars').attr({
-  style: 'background-color:' + BG_COLOR,
-  margin: 0
-})
 
-var star = starfieldDraw.symbol().circle(2).fill('white')
-makeStarfield(star, 100, 80000)
-makeStarfield(star, 200, 160000)
-makeStarfield(star, 200, 320000)
+// var starfieldDraw = SVG('svg.stars').attr({
+//   style: 'background-color:' + BG_COLOR,
+//   margin: 0
+// })
+// var star = starfieldDraw.symbol().circle(2).fill('white')
+// makeStarfield(star, 100, 80000)
+// makeStarfield(star, 200, 160000)
+// makeStarfield(star, 200, 320000)
 
 const coreCircle = draw
   .circle(100)
