@@ -186,9 +186,9 @@ const SIZE_Y = 830
 const PIVOT_X = SIZE_X / 2
 const PIVOT_Y = SIZE_Y / 2
 
-const STARFIELD_X = vh
-const STARFIELD_Y = vw
-const STARFIELD_X_OFFSET = -STARFIELD_Y
+const STARFIELD_X = vw
+const STARFIELD_Y = vh
+const STARFIELD_X_OFFSET = 0
 
 const SIZE_X_HIGHLIGHT = 250
 const SIZE_Y_HIGHLIGHT = 250
@@ -200,10 +200,15 @@ var starfieldDraw = SVG('svg.stars').attr({
   style: 'background-color:' + BG_COLOR,
   margin: 0
 })
+console.log(STARFIELD_X)
+// starfieldDraw.rotate(30, -STARFIELD_X/2, -STARFIELD_Y/2).scale(1)
+starfieldDraw.rotate(0, 0, 0).scale(1)
+
+$('#stars').attr("viewBox", `0 0 ${STARFIELD_X} ${STARFIELD_Y}`);
 var star = starfieldDraw.symbol().circle(2).fill('white')
-makeStarfield(star, 50, 80000)
-makeStarfield(star, 50, 160000)
-makeStarfield(star, 100, 320000)
+makeStarfield(star, 50, 60000)
+makeStarfield(star, 50, 32000)
+makeStarfield(star, 100, 64000)
 
 const coreCircle = draw
   .circle(100)
@@ -279,20 +284,19 @@ function makeStarfield (starSvg, count, duration) {
 
   const timeline = new SVG.Timeline()
   for (let i = 0; i < count; i++) {
-    starfieldDraw
+    starfieldGroup
       .use(starSvg)
       .scale(getRandomArbitrary(0.5, 1.5))
       .translate(
-        getRandomArbitrary(// hacky way to not screw up the corners of this diagonal crawl
-          Math.min(0, STARFIELD_X_OFFSET),
-          STARFIELD_X + Math.max(0, STARFIELD_X_OFFSET)
+        getRandomArbitrary(0,STARFIELD_X
         ),
         STARFIELD_Y
       ) // prolly needs +n% for diagonal screen being longer than non-diagonal
       .timeline(timeline)
       .animate(duration, getRandomArbitrary(0, duration), 'start')
       .ease('-')
-      .translate(-STARFIELD_X_OFFSET, -STARFIELD_Y - 2)
+      .translate(0, -STARFIELD_Y - 2)
+      // .translate(0, 0)
       .loop(0, false, 0)
   }
   timeline.seek(duration)
@@ -305,9 +309,7 @@ function makeCircledSymbol (r, symbolName) {
   if (symbolName) {
     symbolObj = SYMBOL_NAME_TO_STRING_MAP[symbolName]
     // console.log(symbolName)
-    console.log(typeof symbolName)
     if (symbolObj.constructor === Object) {
-      console.log(symbolObj)
       symbolSvg = symbolObj.svg
       const cardSymbolDescription = symbolSvg.description
     } else {

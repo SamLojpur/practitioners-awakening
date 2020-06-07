@@ -10,6 +10,7 @@ html, body, header {
 header {
   position: relative;
   z-index: 0;
+  overflow: hidden;
 }
 
 /* header {
@@ -49,9 +50,13 @@ text-align:center;
 }
 
 .stars {
-  position: absolute;
+  overflow: hidden;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  /* position: absolute;
   top: 0;
-  left: 0;
+  left: 0; */
   z-index: -100;
   object-fit: cover;
   height: 100%;
