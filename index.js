@@ -175,8 +175,8 @@ const PIVOT_X = SIZE_X / 2
 const PIVOT_Y = SIZE_Y / 2
 const STARFIELD_X_OFFSET = -2000
 
-const STARFIELD_X = 1920
-const STARFIELD_Y = 1080
+const STARFIELD_X = vh
+const STARFIELD_Y = vw
 
 const SIZE_X_HIGHLIGHT = 250
 const SIZE_Y_HIGHLIGHT = 250
@@ -184,14 +184,14 @@ const SIZE_Y_HIGHLIGHT = 250
 var highlightDraw = SVG('svg.info').attr({ margin: 0 }).size(SIZE_X_HIGHLIGHT, SIZE_Y_HIGHLIGHT)
 var draw = SVG('svg.magic-circle').attr({ margin: 0 }).size(SIZE_X, SIZE_Y)
 
-// var starfieldDraw = SVG('svg.stars').attr({
-//   style: 'background-color:' + BG_COLOR,
-//   margin: 0
-// })
-// var star = starfieldDraw.symbol().circle(2).fill('white')
-// makeStarfield(star, 100, 80000)
-// makeStarfield(star, 200, 160000)
-// makeStarfield(star, 200, 320000)
+var starfieldDraw = SVG('svg.stars').attr({
+  style: 'background-color:' + BG_COLOR,
+  margin: 0
+})
+var star = starfieldDraw.symbol().circle(2).fill('white')
+makeStarfield(star, 50, 80000)
+makeStarfield(star, 50, 160000)
+makeStarfield(star, 100, 320000)
 
 const coreCircle = draw
   .circle(100)
@@ -271,7 +271,7 @@ function makeStarfield (starSvg, count, duration) {
       .use(starSvg)
       .scale(getRandomArbitrary(0.5, 1.5))
       .translate(
-        getRandomArbitrary(
+        getRandomArbitrary(// hacky way to not screw up the corners of this diagonal crawl
           Math.min(0, STARFIELD_X_OFFSET),
           STARFIELD_X + Math.max(0, STARFIELD_X_OFFSET)
         ),
