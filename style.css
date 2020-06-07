@@ -13,6 +13,7 @@ header {
   overflow: hidden;
 }
 
+
 /* header {
   text-align: center;
   font: 3em/1.4 helvetica neue, helvetica, arial, sans-serif;
@@ -83,6 +84,11 @@ text-align:center;
   /* object-fit: contain; */
   /* overflow: auto; */
 }
+
+.flex-grow {
+  flex-grow: 1;
+}
+
 .info {
   display: inline-block;
   margin: 0 auto;
@@ -99,8 +105,7 @@ text-align:center;
   display: inline-block;
   margin: 20px auto;
   /* width: 450px; */
-  width: 30em;
-
+  width: 30rem;
 }
 
 .chapter-divider {
@@ -114,6 +119,16 @@ text-align:center;
 
 @media screen and (max-width: 1775px) {
   .col-xl-3{
+    display: none;
+  }
+}
+
+@media (max-width: 992px) {
+  body{font-size: 1.7rem;}
+  .popup-card {
+    width: 100%;
+  }
+  .desktop-buffer{
     display: none;
   }
 }
