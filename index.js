@@ -185,10 +185,10 @@ const SIZE_X = 830
 const SIZE_Y = 830
 const PIVOT_X = SIZE_X / 2
 const PIVOT_Y = SIZE_Y / 2
-const STARFIELD_X_OFFSET = -2000
 
 const STARFIELD_X = vh
 const STARFIELD_Y = vw
+const STARFIELD_X_OFFSET = -STARFIELD_Y
 
 const SIZE_X_HIGHLIGHT = 250
 const SIZE_Y_HIGHLIGHT = 250
