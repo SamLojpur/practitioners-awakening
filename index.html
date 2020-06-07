@@ -14,39 +14,37 @@
 
 <body>
   <header>
-    <div class="wrap">
-      <svg class="stars" viewBox="0 0 1920 1080" preserveAspectRatio="xMinYMin slice"></svg>
-    </div>
-    <div class="wrap">
-      <div class="d-flex w-100">
-        <div class="col-3" style="text-align:center; padding-top: 75px;">
-          <div class="card bg-transparent text-white border-white" style="display: inline-block;  margin: 0 auto;">
-            <span class="card-header bg-transparent info-wrap" style="display: inline-block;">
-              <svg class="info" alt=" Card image cap">
-            </span>
-            <hr style="width:80%; border-top: 2px solid white; margin: auto;     border: 0;
-            height: 1px;
-            background-image: linear-gradient(to right, rgba(0, 0, 0, 0),white, rgba(0, 0, 0, 0));">
-            <div class="card-body">
-              <h5 class="card-title" id="cardSymbolName">Card title</h5>
-              <p2 class="card-text">Some</p2>
-              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
-            </div>
-          </div>
-          <!-- <svg class="highlight"> </svg> -->
-        </div>
-        <div class="col-6">
+    <svg class="stars" viewBox="0 0 1920 1080" preserveAspectRatio="xMinYMin slice"></svg>
+    <div class="d-flex flex-wrap w-100">
+      <div class="col-4"></div>
 
-          <svg class="magic-circle"> </svg>
+      <svg class="magic-circle info-wrap"> </svg>
+      <div class="d-flex flex-wrap flex-column h-100 popup-card">
+        <div class="card bg-transparent text-white border-white popup-card">
+          <span class="card-header bg-transparent info-wrap">
+            <svg class="info" alt=" Card image cap"></svg>
+          </span>
+          <!-- <hr class="chapter-divider"> -->
+          <div class="card-body ">
+            <h5 class="card-title" id="cardSymbolName"></h5>
+            <p2 class="card-text" id="cardSymbolDescription">Click a sigil for more
+              info</p2>
+            <br> <br>
+            <hr class="chapter-divider">
+            <br>
+
+            <i class="card-text" id="cardSymbolQuote" style="overflow-wrap: break-word;">Click a sigil for more</i>
+          </div>
         </div>
-        <div class="col-3">1 piece</div>
       </div>
     </div>
     <script type="module" src="index.js"></script>
   </header>
 
-  <div class="bottom-div text-white">
-    <p2> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+  <div class="bottom-div text-white d-flex flex-wrap w-100">
+    <div class="col-sm-3"></div>
+    <p2 class="col-md-6"> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+      labore et dolore
       magna
       aliqua. Id diam maecenas ultricies mi eget mauris pharetra. Vestibulum sed arcu non odio euismod lacinia at. Sem
       nulla pharetra diam sit amet nisl suscipit. A diam sollicitudin tempor id eu nisl. Id volutpat lacus laoreet non.
@@ -112,6 +110,8 @@
         habitasse
         platea dictumst. Sit amet risus nullam eget. Donec et odio pellentesque diam volutpat.
       </p>
+      <div class="col-3"></div>
+
   </div>
 </body>
 
