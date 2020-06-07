@@ -116,39 +116,51 @@ const SYMBOL_NAME_TO_STRING_MAP = {
   },
   ash: {
     svg: 'm -2,3 -5.63539,-6.14769 7.10663,-0.11823 -3.67811,3.84888',
-    description: 'An offering to Others of cleanly burned vegetable ash. The others who accept this offering are symbolically taking nothing, or very little from humanity. The least tamed and most Other Others tend to eat.',
-    quote: 'A lot of these seem like BS by the author. The only commonality I\'ve noticed between ash-taking Others is that they\'re scary motherfuckers...'
+    description: "An offering to Others of cleanly burned vegetable ash.",
+    quote: ''
+
+    // description: 'An offering to Others of cleanly burned vegetable ash. The others who accept this offering are symbolically taking nothing, or very little from humanity. The least tamed and most Other Others tend to eat.',
+    // quote: 'A lot of these seem like BS by the author. The only commonality I\'ve noticed between ash-taking Others is that they\'re scary motherfuckers...'
   },
   alcohol: {
     svg: 'm -2,-3 c 0.40293,1.31325 -2.00785,1.88621 0.0325,2.39648 m -2.99708,-2.32713 3.19108,5.63032 1.95879,-5.64133 h 1.14341 l -3.1022,5.64133',
-    description: 'An offering to Others of the very human qualities of forgetfulness, disconnectedness, and madness.',
-    quote: 'I feel like this is taking too literal of an approach to drunkenness, theres proably a lot to be gained by looking into the cultural value of wine or beer throughot history instead'
+    description: "An offering to Others of alcohol, commonly wine.",
+    quote: ''
+
+    // description: 'An offering to Others of the very human qualities of forgetfulness, disconnectedness, and madness.',
+    // quote: 'I feel like this is taking too literal of an approach to drunkenness, theres proably a lot to be gained by looking into the cultural value of wine or beer throughot history instead'
 
   },
   honey: {
     svg: 'm 0,-1 v 2.00799 m 1.48828,-1.03943 h -7.34691 l 2.26786,2.26786',
-    description: 'An offering to those Others of the parts of humanity that are healing, divine, and sickeningly sweet',
-    quote: 'Faerie creatures seem to be drawn to honey not because of its healing properties but because of its decadance and saccharine taste'
+    description: "An offering to Others of honey, commonly wine.",
+    quote: ''
+    // description: 'An offering to those Others of the parts of humanity that are healing, divine, and sickeningly sweet',
+    // quote: 'Faerie creatures seem to be drawn to honey not because of its healing properties but because of its decadance and saccharine taste'
   },
   milk: {
     svg: 'm -8,-3 3.65486,6.3304 3.57463,-6.32315 z',
-    description: 'An offering to those Others who need our protection and care',
-    quote: 'Needs more research, I\'m honestly not sure of this one. The symbol also appears to overlap with the elemenal symbol for water, so maybe they overlap thematically? I\'ll keep an eye out for any awakenings that substitute milk for water or similar'
+    description: "An offering to Others of milk. Pasturized cow's milk is fine but variants such as goats milk are acceptable. Human breast milk does not confer any noticable benefits and is usually not a worthwhile addition.",
+    // description: 'An offering to those Others who need our protection and care',
+    quote: 'The symbol appears to overlap with the elemenal symbol for water, so maybe they overlap thematically? I\'ll keep an eye out for any awakenings that substitute milk for water or similar.'
   },
   meat: {
     svg: 'm -1,-2 c 0,0 0.61087,-0.57309 1.07233,-0.50286 0.46146,0.0702 1.309,0.62767 1.29887,1.92333 -0.0101,1.29567 -2.93683,4.40489 -2.93683,4.40489 h 0.60689 c 0,0 -2.98411,-3.10922 -2.99424,-4.40489 -0.0101,-1.29566 0.83741,-1.85309 1.29887,-1.92332 0.46146,-0.0702 1.07234,0.50285 1.07234,0.50285',
     description: 'An offering to Others who gain power from flesh. Others tied to eating, bodies, or blood often accept an offering of meat.',
-    quote: 'Seems simple enough, still squicks me out personally'
+    quote: ''
+    // quote: 'Seems simple enough, still squicks me out personally'
   },
   bread: {
     svg: 'm -2,-0.5 2.656087,-2.627575 m -5.278862,0.0048 4.144486,4.218714 -1.645429,1.645418 0.07426,-5.938361',
-    description: 'An offering to Others of that which we consume ourselves. For the most human of Others, and those that wish to eat and live as we do.',
-    quote: 'I remember a shaman I spoke to in France: "Offer bread to the spirits. The ones that take it shall be your kin; the ones that don\'t would never have been". I\'ve tried to preserve the rhyme but it sounded better in French.'
+    description: 'An offering to Others of bread. Simple more natural breads are preferred when possible.',
+    quote: ''
+    // quote: 'I remember a shaman I spoke to in France: "Offer bread to the spirits. The ones that take it shall be your kin; the ones that don\'t would never have been". I\'ve tried to preserve the rhyme but it sounded better in French.'
+
   },
   molasses: {
     svg: 'm -2.5,-1 5.12823,1.65373 m 0.26727,-2.93996 c -3.02755,0.61657 -1.12444,4.46346 -3.99234,5.54584 m 2.10475,-6.1472 c -2.67906,0.7699 -0.83355,4.24565 -3.842,5.26187',
-    description: 'An offering to the Others of the darkness, dreams, and secrets.',
-    quote: 'Weird thematic link between honey and molasses, both are sweet sticky fluids. but humans make molasses ourselves, we only harvest honey. Also an interesting light/dark dichotomy.'
+    description: 'An offering to the Others of molasses, or black treacle.',
+    quote: 'Weird thematic link between honey and molasses, both are sweet and viscous. Both share a root word méli in ancient greek. The main difference would seem to be that humans make molasses ourselves, we only harvest honey.'
   }
 }
 
@@ -206,9 +218,9 @@ let popup = makeCircledSymbol(60, '')
 popup.addTo(highlightDraw).translate(SIZE_X_HIGHLIGHT / 2, SIZE_Y_HIGHLIGHT / 2).scale(3.0)
 
 const innerSymbolGroups = INNER.map((symbolString) => {
-  return makeCircledSymbol(60, symbolString)
+  return makeCircledSymbol(70, symbolString)
 })
-const ringGroup = makeRing(PIVOT_X, PIVOT_Y, 300, innerSymbolGroups, 60)
+const ringGroup = makeRing(PIVOT_X, PIVOT_Y, 300, innerSymbolGroups, 70)
 ringGroup
   .rotate(-90, PIVOT_X, PIVOT_Y)
   .animate(RING_ROTATION_PERIOD, 0, 'now')
@@ -225,9 +237,9 @@ ringGroup.remember('circledShapes').forEach((triangle) =>
 )
 
 const midSymbolGroups = MID.map((symbolString) => {
-  return makeCircledSymbol(60, symbolString)
+  return makeCircledSymbol(70, symbolString)
 })
-const ringGroup2 = makeRing(PIVOT_X, PIVOT_Y, 500, midSymbolGroups, 60)
+const ringGroup2 = makeRing(PIVOT_X, PIVOT_Y, 500, midSymbolGroups, 70)
 ringGroup2
   .rotate(-90, PIVOT_X, PIVOT_Y)
   .animate(RING_ROTATION_PERIOD, 0, 'now')
@@ -244,9 +256,9 @@ ringGroup2.remember('circledShapes').forEach((triangle) =>
 )
 
 const outerSymbolGroups = OUTER.map((symbolString) => {
-  return makeCircledSymbol(60, symbolString)
+  return makeCircledSymbol(70, symbolString)
 })
-const ringGroup3 = makeRing(PIVOT_X, PIVOT_Y, 750, outerSymbolGroups, 60)
+const ringGroup3 = makeRing(PIVOT_X, PIVOT_Y, 750, outerSymbolGroups, 70)
 ringGroup3
   .rotate(-90, PIVOT_X, PIVOT_Y)
   .animate(RING_ROTATION_PERIOD, 0, 'now')
