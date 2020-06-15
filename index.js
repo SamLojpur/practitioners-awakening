@@ -1,33 +1,5 @@
-// SVG.extend(SVG.Element, {
-//     // alias clone method
-//     deepClone: function () {
-//         return this.clone()
-//     }
-
-// })
-
-// SVG.extend(SVG.G, {
-//     // clone object with its children
-//     deepClone: function () {
-//         var clone = this.parent().group()
-
-//         this.each(function () {
-//             clone.add(this.deepClone())
-//         })
-
-//         return clone
-//     }
-
-// })
-
-// var randomProperty = function (obj) {
-//     var keys = Object.keys(obj)
-//     return obj[keys[keys.length * Math.random() << 0]]
-// };
-
 // import SVG from './node_modules/@svgdotjs/svg.js/src/svg.js'
 // import { $, jQuery } from './node_modules/jquery/dist/jquery.js'
-console.log(SVG)
 
 function getRandomArbitrary (min, max) {
   return Math.random() * (max - min) + min
@@ -204,8 +176,8 @@ var starfieldDraw = SVG('svg.stars').attr({
   style: 'background-color:' + BG_COLOR,
   margin: 0
 })
-console.log(STARFIELD_X)
-// starfieldDraw.rotate(30, -STARFIELD_X/2, -STARFIELD_Y/2).scale(1)
+
+//TODO gotta figure out rotating the stars
 starfieldDraw.rotate(0, 0, 0).scale(1)
 
 $('#stars').attr("viewBox", `0 0 ${STARFIELD_X} ${STARFIELD_Y}`);
@@ -214,6 +186,7 @@ makeStarfield(star, 50, 60000)
 makeStarfield(star, 50, 32000)
 makeStarfield(star, 100, 64000)
 
+//TODO make a triangle core
 const coreCircle = draw
   .circle(100)
   .attr({
@@ -226,62 +199,59 @@ const coreCircle = draw
 let popup = makeCircledSymbol(60, '')
 popup.addTo(highlightDraw).translate(SIZE_X_HIGHLIGHT / 2, SIZE_Y_HIGHLIGHT / 2).scale(3.0)
 
-const innerSymbolGroups = INNER.map((symbolString) => {
-  return makeCircledSymbol(70, symbolString)
+const RING_LIST = [
+  {
+    'symbolName': INNER,
+    'radius': 300,
+    'rotationDegrees': -RING_ROTATION_DEGREES,
+    'symbolDegrees': SYMBOL_ROTATION_DEGREES
+  },
+  {
+    'symbolName': MID,
+    'radius': 500,
+    'rotationDegrees': RING_ROTATION_DEGREES,
+    'symbolDegrees': -SYMBOL_ROTATION_DEGREES
+
+  },
+  {
+    'symbolName': OUTER,
+    'radius': 750,
+    'rotationDegrees': -RING_ROTATION_DEGREES,
+    'symbolDegrees': SYMBOL_ROTATION_DEGREES
+
+  },
+]
+
+let ringGroupList = RING_LIST.map( ringProps => {
+    const symbolGroups = ringProps['symbolName'].map((symbolString) => {
+      return makeCircledSymbol(70, symbolString)
+    })
+    const ringGroup = makeRing(PIVOT_X, PIVOT_Y, ringProps['radius'], symbolGroups, 70).remember('ringProps', ringProps)
+    let animation = ringGroup
+      .rotate(-90, PIVOT_X, PIVOT_Y)
+      .animate(RING_ROTATION_PERIOD, 0, 'now')
+      .ease('-')
+      .loop(0)
+      .rotate(ringProps['rotationDegrees'], PIVOT_X, PIVOT_Y)
+      ringGroup.remember('spinningAnimation', animation)
+    
+    ringGroup.remember('circledShapes').forEach((triangle) =>
+      triangle
+        .animate(SYMBOL_ROTATION_PERIOD, 0, 'now')
+        .ease('-')
+        .loop(0)
+        .rotate(ringProps['symbolDegrees'], 0, 0)
+    )
+
+    return ringGroup
 })
-const ringGroup = makeRing(PIVOT_X, PIVOT_Y, 300, innerSymbolGroups, 70)
-ringGroup
-  .rotate(-90, PIVOT_X, PIVOT_Y)
-  .animate(RING_ROTATION_PERIOD, 0, 'now')
-  .ease('-')
-  .loop(0)
-  .rotate(-RING_ROTATION_DEGREES, PIVOT_X, PIVOT_Y)
 
-ringGroup.remember('circledShapes').forEach((triangle) =>
-  triangle
-    .animate(SYMBOL_ROTATION_PERIOD, 0, 'now')
-    .ease('-')
-    .loop(0)
-    .rotate(SYMBOL_ROTATION_DEGREES, 0, 0)
-)
+// ringGroupList.forEach ( ringGroup => {
+//   ringGroup.remember('spinningAnimation').active(false)
+//   ringGroup.remember('spinningAnimation').progress()
 
-const midSymbolGroups = MID.map((symbolString) => {
-  return makeCircledSymbol(70, symbolString)
-})
-const ringGroup2 = makeRing(PIVOT_X, PIVOT_Y, 500, midSymbolGroups, 70)
-ringGroup2
-  .rotate(-90, PIVOT_X, PIVOT_Y)
-  .animate(RING_ROTATION_PERIOD, 0, 'now')
-  .ease('-')
-  .loop(0)
-  .rotate(RING_ROTATION_DEGREES, PIVOT_X, PIVOT_Y)
-
-ringGroup2.remember('circledShapes').forEach((triangle) =>
-  triangle
-    .animate(SYMBOL_ROTATION_PERIOD, 0, 'now')
-    .ease('-')
-    .loop(0)
-    .rotate(-SYMBOL_ROTATION_DEGREES, 0, 0)
-)
-
-const outerSymbolGroups = OUTER.map((symbolString) => {
-  return makeCircledSymbol(70, symbolString)
-})
-const ringGroup3 = makeRing(PIVOT_X, PIVOT_Y, 750, outerSymbolGroups, 70)
-ringGroup3
-  .rotate(-90, PIVOT_X, PIVOT_Y)
-  .animate(RING_ROTATION_PERIOD, 0, 'now')
-  .ease('-')
-  .loop(0)
-  .rotate(-RING_ROTATION_DEGREES, PIVOT_X, PIVOT_Y)
-
-ringGroup3.remember('circledShapes').forEach((triangle) =>
-  triangle
-    .animate(SYMBOL_ROTATION_PERIOD, 0, 'now')
-    .ease('-')
-    .loop(0)
-    .rotate(SYMBOL_ROTATION_DEGREES, 0, 0)
-)
+//   ringGroup.animate(800,0,'now').rotate(0, PIVOT_X, PIVOT_Y)
+// })
 
 function makeStarfield (starSvg, count, duration) {
   const starfieldGroup = starfieldDraw.group()
@@ -372,6 +342,19 @@ function makeCircledSymbol (r, symbolName) {
       $('#cardSymbolDescription').html(symbolObj.description)
       $('#cardSymbolQuote').html(symbolObj.quote)
     }
+// TODO finish making alligner
+    ringGroupList.forEach ( ringGroup => {
+      let angle = ringGroup.remember('spinningAnimation').position() * 360
+      let direction = Math.sign(ringGroup.remember('ringProps')['rotationDegrees'])
+      let animation = ringGroup.animate(800,0,'now').rotate(-direction*angle, PIVOT_X, PIVOT_Y)
+      animation.after(
+        () => {
+          animation.progress(0)
+          animation.unschedule()
+          ringGroup.remember('spinningAnimation').position(-800/RING_ROTATION_PERIOD)
+        }
+      )
+      })
   })
   return circledShapeGroup
 }
@@ -397,15 +380,9 @@ function makeRing (cx, cy, r, symbolList, symbolR) {
     .fill('none')
     .stroke({ color: RING_COLOR, width: 6, linejoin: 'round' })
 
-  // const circledShapes = plot.map(([x, y]) => {
-
-  // })
-
   const maskGroup = draw.symbol().group()
   const maskRing = ring.clone().fill('#fff').stroke('none').scale(1.1)
   maskGroup.add(maskRing)
-
-  maskGroup.back()
 
   const circledShapes = plot.map(([x, y]) => {
     const maskCircle = maskGroup
@@ -424,16 +401,8 @@ function makeRing (cx, cy, r, symbolList, symbolR) {
   ringGroup.remember('circledShapes', circledShapes)
   ringGroup.remember('maskGroup', maskGroup)
 
-  // ringGroup.use(maskGroup)
-
   ring.maskWith(ringGroup.use(maskGroup).translate(-cx + r / 2, -cy + r / 2))
   polyRing.maskWith(ringGroup.use(maskGroup).translate(-cx, -cy))
-
-  // ring.maskWith(maskGroup.clone().translate(-cx + r / 2, -cy + r / 2))
-  // console.log(ring.masker().first())
-  // polyRing.maskWith(maskGroup.clone().translate(-cx, -cy))
-  // ring.masker().first().children().translate(30, 0)
-  // maskGroup.remove()
 
   return ringGroup
 }
