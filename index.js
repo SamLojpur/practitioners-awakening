@@ -211,8 +211,8 @@ starfieldDraw.rotate(0, 0, 0).scale(1)
 $('#stars').attr("viewBox", `0 0 ${STARFIELD_X} ${STARFIELD_Y}`);
 var star = starfieldDraw.symbol().circle(2).fill('white')
 makeStarfield(star, 50, 60000)
-// makeStarfield(star, 50, 32000)
-// makeStarfield(star, 100, 64000)
+makeStarfield(star, 50, 32000)
+makeStarfield(star, 100, 64000)
 
 const coreCircle = draw
   .circle(100)
