@@ -56,10 +56,10 @@ const SYMBOL_NAME_TO_STRING_MAP = {
     svg: 'm -3,0 h -3.75103 l 1.87552,-3.24849 z m 1.87552,-3.24847 -3.75103,6.49698 -3.75104,-6.49698 z',
     description: 'Fate described'
   },
-  coin: {
+  deals: {
     svg: 'm 2,3 c 0,0 0.45956,-0.53289 0.76224,-0.50207 0.3487,0.0355 0.74354,0.39304 0.74354,0.74355 0,0.94512 -2.00491,1.05979 -2.00491,2.00491 0,0.36303 0.40749,0.75251 0.7701,0.7701 0.22612,0.011 0.4795,-0.20964 0.52446,-0.43152 0.0431,-0.21285 -0.0672,-0.41245 -0.35959,-0.4445 m -6.80774,-1.63813 h 6.75554 l -3.25746,-3.72972 z',
-    description: 'The coin is in the unique position of being represented in two different Rings. Most often it finds a home in the Humanity Ring as mark of exchange or fortunes. Its not uncommon, however, for the coin to find a home in the Ring of Offerings as a gesture to the spirits. In cultures with less focus on trade and economics, the coin is often omitted altogether in favour of nature. In either case one will always find better results with a coin than paper currency.',
-    quote: 'I wonder if this strangeness could tie into how the practitioner sees the value of money? Something to be offered like food v.s. a core part of being human.'
+    description: 'The coin is in the unique position of being represented in two different Rings. Most often it finds a home in the Humanity Ring as mark of deals or exchange. Its not uncommon, however, for the coin to find a home in the Ring of Offerings as a gesture to the spirits. In cultures with less focus on trade and economics, the coin is often omitted altogether in favour of nature. In either case one will always find better results with a coin than paper currency.',
+    quote: 'I wonder if this strangeness could tie into how the practitioner sees the value of money? Something to be offered to others (like food) v.s. a core part of being human.'
   },
   holly: {
     svg: 'm 0,-4 c -0.01478,0.659237 -0.09318,1.199372 -0.287404,1.729855 0.163695,-0.06423 0.419915,-0.22432 0.534331,-0.385506 0.653677,0.593032 1.693112,1.13873 2.498834,1.326343 0.05784,0.403305 0.130773,0.805602 0.308213,1.146758 0.07758,-0.519706 0.132793,-0.982714 0.594357,-1.555887 -0.71899,-0.458031 -1.731715,-1.306154 -1.991096,-2.006079 -0.588968,0.0973 -1.140657,-0.08735 -1.657235,-0.255484 z m 0.251636,2.126687 c -0.479182,0.313213 -1.086242,0.479955 -1.700673,0.575676 0.291608,0.510476 0.653526,1.013929 0.502811,1.570963 0.772795,0.134412 1.47243,0.415146 2.027267,0.98547 0.590524,-0.329237 1.196605,-0.531496 1.835547,-0.473356 -0.325938,-0.508508 -0.630391,-1.027416 -0.719852,-1.654163 -0.744948,-0.185083 -1.354558,-0.527857 -1.9451,-1.00459 z m 4.093529,1.484988 c -0.375098,0.0024 -0.789478,0.43055 -0.785478,0.805636 0.0034,0.360997 0.4095,0.763777 0.770498,0.760677 0.37275,-0.0036 0.78283,-0.427717 0.78083,-0.800468 -0.002,-0.360996 -0.40486,-0.768145 -0.76585,-0.765845 z m -1.368097,1.747428 c -0.375094,0.0023 -0.789381,0.430556 -0.785481,0.805635 0.0034,0.361011 0.409498,0.765094 0.770495,0.761194 0.372735,-0.0036 0.782827,-0.428242 0.780827,-0.800985 -0.002,-0.361004 -0.404846,-0.768144 -0.765841,-0.765844 z m 2.202937,0.331403 c -0.37509,0.0024 -0.78948,0.430556 -0.78548,0.805635 0.003,0.360996 0.4095,0.763777 0.7705,0.760677 0.37275,-0.0036 0.78283,-0.427716 0.78083,-0.800467 -0.002,-0.361005 -0.40484,-0.768145 -0.76585,-0.765845 z',
@@ -140,9 +140,22 @@ const SYMBOL_NAME_TO_STRING_MAP = {
   }
 }
 
-const OUTER = ['fate', 'war', 'time', 'death', 'coin']
+const OUTER = ['fate', 'war', 'time', 'death', 'deals']
 const MID = ['oil', 'spice', 'quartz', 'holly', 'myrrh']
 const INNER = ['milk', 'honey', 'molasses', 'ash', 'alcohol', 'meat', 'bread']
+
+const OTHER_INTERACTIONS = {
+  miss: {in: 'fate', accepts: 'ash', offers: 'myrrh', out:'fate'},
+  john: {in: 'war', accepts: 'bread', offers: 'oil', out:'war'},
+  maricica: {in: 'fate', accepts: 'honey', offers: 'quartz', out:'deals'},
+  goblins: {in: 'war', accepts: 'meat', offers: 'spice', out:'death'},
+  toadswallow: {in: 'war', accepts: 'meat', offers: 'spice', out:'time'},
+  guilherme: {in: 'time', accepts: 'honey', offers: null, out:'fate'},
+  alpeana: {in: 'fate', accepts: 'molasses', offers: 'oil', out:'fate'},
+  edith: {in: 'death', accepts: 'ash', offers: 'myrrh', out:'deals'},
+  matthew: {in: 'time', accepts: 'alcohol', offers: 'oil', out:'death'},
+  'hungry-choir': {in: 'death', accepts: 'meat', offers: null, out:'deals'},
+}
 
 const vw = Math.max(
   document.documentElement.clientWidth || 0,
@@ -181,6 +194,8 @@ var starfieldDraw = SVG('svg.stars').attr({
 starfieldDraw.rotate(0, 0, 0).scale(1)
 
 $('#stars').attr("viewBox", `0 0 ${STARFIELD_X} ${STARFIELD_Y}`);
+
+
 var star = starfieldDraw.symbol().circle(2).fill('white')
 makeStarfield(star, 50, 60000)
 makeStarfield(star, 50, 32000)
@@ -230,6 +245,7 @@ let ringGroupList = RING_LIST.map( ringProps => {
     let animation = ringGroup
       .rotate(-90, PIVOT_X, PIVOT_Y)
       .animate(RING_ROTATION_PERIOD, 0, 'now')
+      .persist(true)
       .ease('-')
       .loop(0)
       .rotate(ringProps['rotationDegrees'], PIVOT_X, PIVOT_Y)
@@ -252,6 +268,36 @@ let ringGroupList = RING_LIST.map( ringProps => {
 
 //   ringGroup.animate(800,0,'now').rotate(0, PIVOT_X, PIVOT_Y)
 // })
+$('.sidebar').delegate('a', 'click', function() {
+  let [type, value] = $(this).attr('id').split(" ")
+  if (type == "other") {
+    const interactions = OTHER_INTERACTIONS[value]
+    bringToTop(ringGroupList[0], interactions["accepts"])
+    bringToTop(ringGroupList[1], interactions["offers"])
+    bringToTop(ringGroupList[2], interactions["in"])
+  }
+  // if (type == "ritual") {
+
+  // }
+});
+
+$(document).ready(function() {
+  $( ".sidebar .nav-link" ).bind( "click", function(event) {
+    let spinningAnimation = ringGroupList[0].remember('spinningAnimation')
+
+    if (spinningAnimation.active() == true) {
+
+      event.preventDefault();
+      var clickedItem = $( this );
+      $( ".sidebar .nav-link" ).each( function() {
+          $( this ).removeClass( "active" );
+      });
+      clickedItem.addClass( "active" );
+    }
+  });
+});
+
+
 
 function makeStarfield (starSvg, count, duration) {
   const starfieldGroup = starfieldDraw.group()
@@ -293,6 +339,7 @@ function makeCircledSymbol (r, symbolName) {
 
   const SCALE_FACTOR = 1.2
   const circledShapeGroup = draw.group()
+  circledShapeGroup.remember('symbolName', symbolName)
 
   // eslint-disable-next-line no-unused-vars
   const shape = circledShapeGroup
@@ -326,6 +373,7 @@ function makeCircledSymbol (r, symbolName) {
       shapeHolder.animate(300, '<>').stroke(RING_COLOR)
     }
   })
+
   circledShapeGroup.on('click touchend', function () {
     if (this.remember('mask') !== undefined) {
       this.animate(500, '<>').rotate(360)
@@ -342,21 +390,49 @@ function makeCircledSymbol (r, symbolName) {
       $('#cardSymbolDescription').html(symbolObj.description)
       $('#cardSymbolQuote').html(symbolObj.quote)
     }
-// TODO finish making alligner
-    ringGroupList.forEach ( ringGroup => {
-      let angle = ringGroup.remember('spinningAnimation').position() * 360
-      let direction = Math.sign(ringGroup.remember('ringProps')['rotationDegrees'])
-      let animation = ringGroup.animate(800,0,'now').rotate(-direction*angle, PIVOT_X, PIVOT_Y)
-      animation.after(
-        () => {
-          animation.progress(0)
-          animation.unschedule()
-          ringGroup.remember('spinningAnimation').position(-800/RING_ROTATION_PERIOD)
-        }
-      )
-      })
   })
   return circledShapeGroup
+}
+
+function bringToTop(ringGroup, symbolName) {
+  let spinningAnimation = ringGroup.remember('spinningAnimation')
+
+  if (spinningAnimation.active() == false) {
+    return null
+  }
+  if (symbolName == null) {
+    ringGroup.timeline().play()
+    return null
+  }
+  let child = null;
+  ringGroup.children().forEach(c => {
+    if (c.remember('symbolName') == symbolName) {
+      child = c
+    }
+  })
+  if (child == null) {
+    console.warn(`child with name ${symbolName} not found`)
+  }
+  let direction = Math.sign(ringGroup.remember('ringProps')['rotationDegrees'])
+  let ringAngle = spinningAnimation.position() * 360
+  let angle = (360 + direction * child.remember('angle'))
+  let deltaAngle = direction * (360 - ((ringAngle + angle) % 360))
+  spinningAnimation.persist(true)
+
+  spinningAnimation.active(false)
+  ringGroup.animate(1000,0,'now').rotate(deltaAngle, PIVOT_X, PIVOT_Y).after( (toTopAnimation) => {
+    toTopAnimation.detail.reset()
+    toTopAnimation.detail.unschedule()
+
+    spinningAnimation.active(true)
+    ringGroup.timeline().pause()
+    if (direction < 0) {
+      spinningAnimation.position(angle/360)
+    } else {
+      spinningAnimation.position(-(360 - angle)/360)
+    }
+  })
+  return child
 }
 
 function makeRing (cx, cy, r, symbolList, symbolR) {
@@ -394,6 +470,7 @@ function makeRing (cx, cy, r, symbolList, symbolR) {
 
     return symbolList.pop()
       .addTo(ringGroup)
+      .remember('angle', angles[0])
       .rotate(angles.shift())
       .translate(cx + x, cy + y)
       .remember('mask', maskCircle, true)

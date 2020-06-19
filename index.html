@@ -61,36 +61,41 @@
       <div class="sidebar-content text-white">
         <div class="sidebar-heading navbar-brand">Awakening</div>
         <hr class="chapter-divider">
-        <div class="list-group list-group-flush navbar-nav">
-          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link active">Kennet, ON</a>
-          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link"
+        <div class="list-group list-group-flush navbar-nav sidebar">
+          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link" id="ritual kennet">Kennet,
+            ON</a>
+          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link" id="other miss"
             style="text-indent:1em;">Miss</a>
-          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link"
+          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link" id="other john"
             style="text-indent:1em;">John</a>
-          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link"
+          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link" id="other maricica"
             style="text-indent:1em;">Maricica</a>
-          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link"
+          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link" id="other goblins"
             style="text-indent:1em;">Goblins</a>
-          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link"
+          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link" id="other toadswallow"
             style="text-indent:1em;">Toadswallow</a>
-          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link"
-            style="text-indent:1em;">The Giant</a>
-          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link"
-            style="text-indent:1em;">Filthy Hair Girl</a>
-          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link"
+          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link" id="other guilherme"
+            style="text-indent:1em;">Guilherme</a>
+          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link" id="other alpeana"
+            style="text-indent:1em;">Alpeana</a>
+          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link" id="other edith"
             style="text-indent:1em;">Edith</a>
-          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link"
+          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link" id="other matthew"
             style="text-indent:1em;">Matthew</a>
-          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link"
+          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link" id="other hungry-choir"
             style="text-indent:1em;">Hungry Choir</a>
 
 
           <a class="list-group-item bg-transparent">
             <hr class="chapter-divider"></a>
-          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link">Jacob's Bell, ON</a>
+          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link"
+            id="ritual jacobs-bell">Jacob's
+            Bell, ON</a>
           <a class="list-group-item bg-transparent">
             <hr class="chapter-divider"></a>
-          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link">Montreal, QC</a>
+          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link"
+            id="ritual montreal">Montreal,
+            QC</a>
           <a class="list-group-item bg-transparent">
             <hr class="chapter-divider"></a>
         </div>
@@ -150,6 +155,18 @@
     $("#menu-toggle").click(function (e) {
       e.preventDefault();
       $("#wrapper").toggleClass("toggled");
+    });
+  </script>
+  <script>
+    $(document).ready(function () {
+      $(".mr-auto .nav-item").bind("click", function (event) {
+        event.preventDefault();
+        var clickedItem = $(this);
+        $(".mr-auto .nav-item").each(function () {
+          $(this).removeClass("active");
+        });
+        clickedItem.addClass("active");
+      });
     });
   </script>
 </body>

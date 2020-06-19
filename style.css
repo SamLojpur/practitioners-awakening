@@ -136,7 +136,7 @@ text-align:center;
 
 .navbar {
   z-index: 99999;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  /* border-bottom: 1px solid rgba(255, 255, 255, 0.3); */
 }
 .navbar-brand {
  margin-left: 1rem;
@@ -145,7 +145,9 @@ text-align:center;
 
 /* sidebar stuff */
 .list-group-item {
-  border: 1px solid rgba(255, 255, 255, 0.0);
+  margin-top: 0px !important;
+  border-bottom: 1px !important;
+  border: 0px solid rgba(255, 255, 255, 0.0);
   padding-top: 0.25rem !important;
   padding-bottom: 0.25rem !important;
   padding-left: 1.25rem !important;
