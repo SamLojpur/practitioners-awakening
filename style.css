@@ -124,7 +124,7 @@ text-align:center;
 }
 
 @media (max-width: 992px) {
-  p2{font-size: 1.6rem;}
+  html{font-size: 1.6rem;}
   .popup-card {
     width: 40rem;
   }
