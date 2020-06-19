@@ -269,32 +269,27 @@ let ringGroupList = RING_LIST.map( ringProps => {
 //   ringGroup.animate(800,0,'now').rotate(0, PIVOT_X, PIVOT_Y)
 // })
 $('.sidebar').delegate('a', 'click', function() {
-  let [type, value] = $(this).attr('id').split(" ")
-  if (type == "other") {
-    const interactions = OTHER_INTERACTIONS[value]
-    bringToTop(ringGroupList[0], interactions["accepts"])
-    bringToTop(ringGroupList[1], interactions["offers"])
-    bringToTop(ringGroupList[2], interactions["in"])
-  }
-  // if (type == "ritual") {
+  if(ringGroupList[0].remember('spinningAnimation').active() && $(this).hasClass('nav-link')) {
 
-  // }
-});
+    $( ".sidebar .nav-link" ).each( function() {
+      $( this ).removeClass( "active" );
+    });
+    $(this).addClass( "active" );
 
-$(document).ready(function() {
-  $( ".sidebar .nav-link" ).bind( "click", function(event) {
-    let spinningAnimation = ringGroupList[0].remember('spinningAnimation')
-
-    if (spinningAnimation.active() == true) {
-
-      event.preventDefault();
-      var clickedItem = $( this );
-      $( ".sidebar .nav-link" ).each( function() {
-          $( this ).removeClass( "active" );
-      });
-      clickedItem.addClass( "active" );
+    let [type, value] = $(this).attr('id').split(" ")
+    if (type == "other") {
+      const interactions = OTHER_INTERACTIONS[value]
+      bringToTop(ringGroupList[0], interactions["accepts"])
+      bringToTop(ringGroupList[1], interactions["offers"])
+      bringToTop(ringGroupList[2], interactions["in"])
     }
-  });
+    if (type == "ritual") {
+      ringGroupList.forEach(groupList => {
+        bringToTop(groupList, null)
+      });
+
+    }
+  }
 });
 
 
@@ -417,6 +412,10 @@ function bringToTop(ringGroup, symbolName) {
   let ringAngle = spinningAnimation.position() * 360
   let angle = (360 + direction * child.remember('angle'))
   let deltaAngle = direction * (360 - ((ringAngle + angle) % 360))
+  if (deltaAngle == 360 || deltaAngle == -360) {
+    deltaAngle = 0
+  }
+  console.log(deltaAngle)
   spinningAnimation.persist(true)
 
   spinningAnimation.active(false)
