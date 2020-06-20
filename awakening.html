@@ -1,174 +1,258 @@
 <!DOCTYPE html>
 <html>
-<meta name="viewport" content="user-scalable=no">
+  <meta name="viewport" content="user-scalable=no" />
 
-<head>
-  <title>Pact Awakening</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-  <link rel="stylesheet" type="text/css" href="style.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
-  <!-- <script type="text/javascript" src="http://livejs.com/live.js"></script> -->
-  <script src="https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3.0/dist/svg.min.js"></script>
-  <!-- <script type="module" src="./svg.js"></script> -->
-</head>
+  <head>
+    <title>Pact Awakening</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <!-- <script type="text/javascript" src="http://livejs.com/live.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3.0/dist/svg.min.js"></script>
+    <!-- <script type="module" src="./svg.js"></script> -->
+  </head>
 
-<body>
-  <nav class="navbar navbar-expand navbar-dark navbar-inverse bg-transparent">
-    <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> -->
-    <!-- </button> -->
-    <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button> -->
-    <button class="bg-transparent btn btn-outline-secondary" id="menu-toggle">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+  <body>
+    <nav class="navbar navbar-expand navbar-dark navbar-inverse bg-transparent">
+      <button class="bg-transparent btn btn-outline-secondary" id="menu-toggle">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-    <a class="navbar-brand" href="#">Essentials</a>
+      <a class="navbar-brand" href="#">Essentials</a>
 
-    <div class="collapse navbar-collapse " id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="about.html">About</a>
-        </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="awakening.html">Awakening</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#">Famliar</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#">Implement</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#">Demesne</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Home</a>
+            <!-- <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a> -->
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+            <!-- <a class="nav-link" href="about.html">About</a> -->
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Awakening</a>
+            <!-- <a class="nav-link" href="awakening.html">Awakening</a> -->
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#">Sigils</a>
+          </li>
+          <!-- <li class="nav-item">
+            <a class="nav-link disabled" href="#">Implement</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#">Demesne</a>
+          </li> -->
+        </ul>
+      </div>
+    </nav>
 
+    <div class="d-flex" id="wrapper">
+      <!-- Sidebar -->
+      <div class="bg-transparent border-right navbar-dark" id="sidebar-wrapper">
+        <div class="sidebar-content text-white">
+          <div class="sidebar-heading navbar-brand">Awakening</div>
+          <hr class="chapter-divider" />
+          <div class="list-group list-group-flush navbar-nav sidebar">
+            <a
+              href="#"
+              class="list-group-item list-group-item-action bg-transparent nav-link"
+              id="ritual kennet"
+              >Kennet, ON</a
+            >
+            <a
+              href="#"
+              class="list-group-item list-group-item-action bg-transparent nav-link"
+              id="other miss"
+              style="text-indent: 1em;"
+              >Miss</a
+            >
+            <a
+              href="#"
+              class="list-group-item list-group-item-action bg-transparent nav-link"
+              id="other john"
+              style="text-indent: 1em;"
+              >John</a
+            >
+            <a
+              href="#"
+              class="list-group-item list-group-item-action bg-transparent nav-link"
+              id="other maricica"
+              style="text-indent: 1em;"
+              >Maricica</a
+            >
+            <a
+              href="#"
+              class="list-group-item list-group-item-action bg-transparent nav-link"
+              id="other goblins"
+              style="text-indent: 1em;"
+              >Goblins</a
+            >
+            <a
+              href="#"
+              class="list-group-item list-group-item-action bg-transparent nav-link"
+              id="other toadswallow"
+              style="text-indent: 1em;"
+              >Toadswallow</a
+            >
+            <a
+              href="#"
+              class="list-group-item list-group-item-action bg-transparent nav-link"
+              id="other guilherme"
+              style="text-indent: 1em;"
+              >Guilherme</a
+            >
+            <a
+              href="#"
+              class="list-group-item list-group-item-action bg-transparent nav-link"
+              id="other alpeana"
+              style="text-indent: 1em;"
+              >Alpeana</a
+            >
+            <a
+              href="#"
+              class="list-group-item list-group-item-action bg-transparent nav-link"
+              id="other edith"
+              style="text-indent: 1em;"
+              >Edith</a
+            >
+            <a
+              href="#"
+              class="list-group-item list-group-item-action bg-transparent nav-link"
+              id="other matthew"
+              style="text-indent: 1em;"
+              >Matthew</a
+            >
+            <a
+              href="#"
+              class="list-group-item list-group-item-action bg-transparent nav-link"
+              id="other hungry-choir"
+              style="text-indent: 1em;"
+              >Hungry Choir</a
+            >
 
+            <a class="list-group-item bg-transparent">
+              <hr class="chapter-divider"
+            /></a>
 
-  <div class="d-flex" id="wrapper">
+            <a
+              href="#"
+              class="list-group-item list-group-item-action bg-transparent nav-link disabled"
+              id="ritual jacobs-bell"
+              >Jacob's Bell, ON</a
+            >
+            <a class="list-group-item bg-transparent">
+              <hr class="chapter-divider"
+            /></a>
 
-    <!-- Sidebar -->
-    <div class="bg-transparent border-right navbar-dark" id="sidebar-wrapper">
-      <div class="sidebar-content text-white">
-        <div class="sidebar-heading navbar-brand">Awakening</div>
-        <hr class="chapter-divider">
-        <div class="list-group list-group-flush navbar-nav sidebar">
-          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link" id="ritual kennet">Kennet,
-            ON</a>
-          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link" id="other miss"
-            style="text-indent:1em;">Miss</a>
-          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link" id="other john"
-            style="text-indent:1em;">John</a>
-          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link" id="other maricica"
-            style="text-indent:1em;">Maricica</a>
-          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link" id="other goblins"
-            style="text-indent:1em;">Goblins</a>
-          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link" id="other toadswallow"
-            style="text-indent:1em;">Toadswallow</a>
-          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link" id="other guilherme"
-            style="text-indent:1em;">Guilherme</a>
-          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link" id="other alpeana"
-            style="text-indent:1em;">Alpeana</a>
-          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link" id="other edith"
-            style="text-indent:1em;">Edith</a>
-          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link" id="other matthew"
-            style="text-indent:1em;">Matthew</a>
-          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link" id="other hungry-choir"
-            style="text-indent:1em;">Hungry Choir</a>
-
-
-          <a class="list-group-item bg-transparent">
-            <hr class="chapter-divider"></a>
-          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link disabled"
-            id="ritual jacobs-bell">Jacob's
-            Bell, ON</a>
-          <a class="list-group-item bg-transparent">
-            <hr class="chapter-divider"></a>
-          <a href="#" class="list-group-item list-group-item-action bg-transparent nav-link disabled"
-            id="ritual montreal">Montreal,
-            QC</a>
-          <a class="list-group-item bg-transparent">
-            <hr class="chapter-divider"></a>
+            <a
+              href="#"
+              class="list-group-item list-group-item-action bg-transparent nav-link disabled"
+              id="ritual montreal"
+              >Montreal, QC</a
+            >
+            <a class="list-group-item bg-transparent">
+              <hr class="chapter-divider"
+            /></a>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Content Wrap -->
-    <div id="page-content-wrapper">
-      <header>
-        <svg class="stars" id="stars" preserveAspectRatio="xMinYMin slice"></svg>
-        <div class="d-flex flex-row flex-wrap w-100" style="max-width: 100%; position: relative;">
+      <!-- Content Wrap -->
+      <div id="page-content-wrapper">
+        <header>
+          <svg
+            class="stars"
+            id="stars"
+            preserveAspectRatio="xMinYMin slice"
+          ></svg>
+          <div
+            class="d-flex flex-row flex-wrap w-100"
+            style="max-width: 100%; position: relative;"
+          >
+            <!-- <div class="col-xl-3"></div> -->
+            <svg class="magic-circle" viewBox="0 0 830 830"></svg>
+            <div class="d-flex flex-wrap flex-column h-100 popup-card">
+              <div
+                class="card bg-transparent text-white border-white popup-card"
+              >
+                <span class="card-header bg-transparent info-wrap">
+                  <svg
+                    class="info"
+                    viewBox="0 0 250 250"
+                    alt=" Card image cap"
+                  ></svg>
+                </span>
+                <!-- <hr class="chapter-divider"> -->
+                <div class="card-body">
+                  <h5 class="card-title" id="cardSymbolName"></h5>
+                  <p2 class="card-text" id="cardSymbolDescription"
+                    >Click a sigil for more info</p2
+                  >
+                  <br />
+                  <br />
+                  <hr class="chapter-divider" />
+                  <br />
 
-          <!-- <div class="col-xl-3"></div> -->
-          <svg class="magic-circle" viewBox="0 0 830 830"> </svg>
-          <div class="d-flex flex-wrap flex-column h-100 popup-card">
-            <div class="card bg-transparent text-white border-white popup-card">
-              <span class="card-header bg-transparent info-wrap">
-                <svg class="info" viewBox="0 0 250 250" alt=" Card image cap"></svg>
-              </span>
-              <!-- <hr class="chapter-divider"> -->
-              <div class="card-body ">
-                <h5 class="card-title" id="cardSymbolName"></h5>
-                <p2 class="card-text" id="cardSymbolDescription">Click a sigil for more
-                  info</p2>
-                <br> <br>
-                <hr class="chapter-divider">
-                <br>
-
-                <p2><i class="card-text" id="cardSymbolQuote" style="overflow-wrap: break-word;">Click a sigil for
-                    more</i></p2>
+                  <p2
+                    ><i
+                      class="card-text"
+                      id="cardSymbolQuote"
+                      style="overflow-wrap: break-word;"
+                      >Click a sigil for more</i
+                    ></p2
+                  >
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </header>
+        </header>
 
-      <div class="bottom-div text-white d-flex flex-wrap w-100">
-        <div class="col-sm-3 desktop-buffer"></div>
-        <p2 class="col-lg-6 col-12  flex-grow">
-          ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-          dolore
-          magna aliqua. Id diam maecenas ultricies mi eget mauris pharetra. Vestibulum sed arcu non odio euismod
-          lacinia at. Sem nulla pharetra diam sit amet nisl suscipit. A diam sollicitudin tempor id eu nisl. Id
-          volutpat lacus laoreet non. Consequat id porta nibh venenatis. Semper eget duis at tellus at urna
-          condimentum. Nulla aliquet enim tortor at auctor. Adipiscing at in tellus integer feugiat. Enim blandit
-          volutpat maecenas volutpat blandit aliquam etiam. Dui nunc mattis enim ut tellus. Nibh nisl condimentum id
-          venenatis a condimentum vitae sapien. Sit amet nulla facilisi morbi tempus iaculis urna. Quam vulputate
-          dignissim suspendisse in est ante. At augue eget arcu dictum varius. Eu mi bibendum neque egestas congue
-          quisque. Sed tempus urna et pharetra pharetra massa.
-        </p2>
-        <div class="col-sm-3 desktop-buffer"></div>
+        <div class="bottom-div text-white d-flex flex-wrap w-100">
+          <div class="col-sm-3 desktop-buffer"></div>
+          <p2 class="col-lg-6 col-12 flex-grow">
+            ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Id diam maecenas
+            ultricies mi eget mauris pharetra. Vestibulum sed arcu non odio
+            euismod lacinia at. Sem nulla pharetra diam sit amet nisl suscipit.
+            A diam sollicitudin tempor id eu nisl. Id volutpat lacus laoreet
+            non. Consequat id porta nibh venenatis. Semper eget duis at tellus
+            at urna condimentum. Nulla aliquet enim tortor at auctor. Adipiscing
+            at in tellus integer feugiat. Enim blandit volutpat maecenas
+            volutpat blandit aliquam etiam. Dui nunc mattis enim ut tellus. Nibh
+            nisl condimentum id venenatis a condimentum vitae sapien. Sit amet
+            nulla facilisi morbi tempus iaculis urna. Quam vulputate dignissim
+            suspendisse in est ante. At augue eget arcu dictum varius. Eu mi
+            bibendum neque egestas congue quisque. Sed tempus urna et pharetra
+            pharetra massa.
+          </p2>
+          <div class="col-sm-3 desktop-buffer"></div>
+        </div>
       </div>
     </div>
-  </div>
-  <script type="module" src="index.js"></script>
-  <script>
-    $("#menu-toggle").click(function (e) {
-      e.preventDefault();
-      $("#wrapper").toggleClass("toggled");
-    });
-  </script>
-  <script>
-    $(document).ready(function () {
-      $(".mr-auto .nav-item").bind("click", function (event) {
-        event.preventDefault();
-        var clickedItem = $(this);
-        $(".mr-auto .nav-item").each(function () {
-          $(this).removeClass("active");
-        });
-        clickedItem.addClass("active");
+    <script type="module" src="index.js"></script>
+    <script>
+      $("#menu-toggle").click(function (e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
       });
-    });
-  </script>
-</body>
-
+    </script>
+    <script>
+      $(document).ready(function () {
+        $(".mr-auto .nav-item").bind("click", function (event) {
+          event.preventDefault();
+          var clickedItem = $(this);
+          $(".mr-auto .nav-item").each(function () {
+            $(this).removeClass("active");
+          });
+          clickedItem.addClass("active");
+        });
+      });
+    </script>
+  </body>
 </html>
