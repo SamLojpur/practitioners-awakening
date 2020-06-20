@@ -368,9 +368,15 @@ function makeCircledSymbol (r, symbolName) {
       shapeHolder.animate(300, '<>').stroke(RING_COLOR)
     }
   })
-
+  var flag
   circledShapeGroup.on('click touchend', function () {
+    if (flag) {
+      return
+      // do something
+    }
     if (this.remember('mask') !== undefined) {
+      flag = true;
+      setTimeout(function(){ flag = false; }, 100);
       this.animate(500, '<>').rotate(360)
       popup.remove()
       popup = makeCircledSymbol(60, symbolName)
