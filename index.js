@@ -17,6 +17,8 @@ const PRIMARY_LIGHT = '#362f6e'
 const SECONDARY_DARK = '#c6a700'
 const SECONDARY = '#fdd835'
 const SECONDARY_LIGHT = '#ffff6b'
+const GREEN = '#228B22'
+const RED = '#B22222'
 
 const BG_COLOR = PRIMARY_DARK
 const RING_COLOR = PRIMARY
@@ -283,8 +285,19 @@ $('.sidebar').delegate('a', 'click', function() {
     $(this).addClass( "active" );
 
     let [type, value] = $(this).attr('id').split(" ")
+
+    lowlightAll(ringGroupList[0])
+    lowlightAll(ringGroupList[1])
+    lowlightAll(ringGroupList[2])
+
     if (type == "other") {
       const interactions = OTHER_INTERACTIONS[value]
+
+      highlight(ringGroupList[2], interactions["out"], RED)
+      highlight(ringGroupList[0], interactions["accepts"], GREEN)
+      highlight(ringGroupList[1], interactions["offers"], GREEN)
+      highlight(ringGroupList[2], interactions["in"], GREEN)
+
       bringToTop(ringGroupList[0], interactions["accepts"])
       bringToTop(ringGroupList[1], interactions["offers"])
       bringToTop(ringGroupList[2], interactions["in"])
@@ -329,7 +342,6 @@ function makeCircledSymbol (r, symbolName) {
   let symbolObj = ''
   if (symbolName) {
     symbolObj = SYMBOL_NAME_TO_STRING_MAP[symbolName]
-    // console.log(symbolName)
     if (symbolObj.constructor === Object) {
       symbolSvg = symbolObj.svg
       const cardSymbolDescription = symbolSvg.description
@@ -356,13 +368,18 @@ function makeCircledSymbol (r, symbolName) {
     .stroke({ color: RING_COLOR, width: 6, linejoin: 'round' })
     .attr({ 'fill-opacity': 0 })
 
+
+  circledShapeGroup.remember('highlight', "none")
   circledShapeGroup.on('mouseover', function () {
     if (this.remember('mask') !== undefined) {
       this.animate(300, '<>')
         .scale(SCALE_FACTOR)
       this.remember('mask').animate(300, '<>')
         .scale(SCALE_FACTOR)
-      shapeHolder.animate(300, '<>').stroke(CIRCLE_COLOR)
+      if (this.remember('highlight') === "none") {
+        shapeHolder.animate(300, '<>').stroke(CIRCLE_COLOR)
+        this.remember('highlight', CIRCLE_COLOR)
+      }
     }
   })
   circledShapeGroup.on('mouseout', function () {
@@ -371,9 +388,17 @@ function makeCircledSymbol (r, symbolName) {
         .scale(1 / SCALE_FACTOR)
       this.remember('mask').animate(300, '<>')
         .scale(1 / SCALE_FACTOR)
-      shapeHolder.animate(300, '<>').stroke(RING_COLOR)
+      if (this.remember('highlight') === CIRCLE_COLOR) {
+        shapeHolder.animate(300, '<>').stroke(RING_COLOR)
+        this.remember('highlight', "none")
+      }
     }
   })
+
+  circledShapeGroup.highlight = (color) => {
+    shapeHolder.animate(300, '<>').stroke(color)
+  }
+
   var flag
   circledShapeGroup.on('click touchend', function () {
     if (flag) {
@@ -399,6 +424,23 @@ function makeCircledSymbol (r, symbolName) {
     }
   })
   return circledShapeGroup
+}
+
+function highlight(ringGroup, symbolName, color) {
+  ringGroup.children().forEach(c => {
+    if (c.remember('symbolName') == symbolName && c.highlight) {
+      c.highlight(color);
+      c.remember('highlight', color)    }
+  })
+}
+
+function lowlightAll(ringGroup) {
+  ringGroup.children().forEach(c => {
+    if (c.highlight) {
+      c.highlight(RING_COLOR);
+      c.remember('highlight', "none")
+    }
+  })
 }
 
 function bringToTop(ringGroup, symbolName) {
@@ -427,7 +469,6 @@ function bringToTop(ringGroup, symbolName) {
   if (deltaAngle == 360 || deltaAngle == -360) {
     deltaAngle = 0
   }
-  console.log(deltaAngle)
   spinningAnimation.persist(true)
 
   spinningAnimation.active(false)
